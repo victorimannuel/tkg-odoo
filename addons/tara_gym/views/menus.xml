@@ -26,9 +26,9 @@
                   action="action_gym_member"
                   sequence="10"/>
         <menuitem id="menu_gym_drop_in"
-                  name="Drop-In"
+                  name="Quick Add Membership"
                   parent="menu_gym_members"
-                  action="action_gym_drop_in_wizard"
+                  action="action_gym_quick_add_membership_wizard"
                   sequence="10"/>
                   
         <menuitem id="menu_gym_visitor"

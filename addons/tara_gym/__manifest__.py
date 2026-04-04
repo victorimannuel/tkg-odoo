@@ -65,6 +65,7 @@
         'wizard/gym_checkin_wizard_views.xml',
         'wizard/gym_class_enrollment_create_wizard_views.xml',
         'wizard/gym_schedule_create_wizard_views.xml',
+        'wizard/gym_quick_add_membership_wizard_views.xml',
         'wizard/gym_drop_in_wizard_views.xml',
         'views/menus.xml',
 
@@ -91,6 +92,7 @@
             # 'tara_gym/static/src/js/booking_type_context.js',
         ],
         'point_of_sale._assets_pos': [
+            'tara_gym/static/src/pos/auto_cashier_login_patch.js',
             'tara_gym/static/src/pos/navbar_patch.js',
             'tara_gym/static/src/pos/navbar_patch.xml',
         ],

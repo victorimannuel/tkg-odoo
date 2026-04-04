@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_quick_add_membership_wizard_form" model="ir.ui.view">
+        <field name="name">gym.quick.add.membership.wizard.form</field>
+        <field name="model">gym.quick.add.membership.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Quick Add Membership">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="is_new_member"/>
+                            <field name="member_id" invisible="is_new_member"/>
+                        </group>
+                        <group>
+                            <field name="membership_category_id" domain="[('gym_category_type', '=', 'membership')]"/>
+                            <field name="membership_id" domain="[('category_id', '=', membership_category_id)]"/>
+                            <field name="price"/>
+                        </group>
+                    </group>
+
+                    <group invisible="not is_new_member">
+                        <group string="New Member Details">
+                            <field name="firstname" placeholder="First Name"/>
+                            <field name="surname" placeholder="Last Name"/>
+                            <field name="date_of_birth" placeholder="Date of Birth"/>
+                            <field name="gender" placeholder="Gender"/>
+                            <field name="comment" placeholder="Note"/>
+                        </group>
+                        <group string="Contact">
+                            <field name="email" placeholder="Email"/>
+                            <field name="phone" placeholder="Phone"/>
+                            <field name="image_1920" widget="camera_image" nolabel="0" options="{'preview_image': 'image_1920'}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_quick_add_membership_wizard" model="ir.actions.act_window">
+        <field name="name">Quick Add Membership</field>
+        <field name="res_model">gym.quick.add.membership.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_quick_add_membership_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'from_drop_in_menu': 1, 'default_is_new_member': True}</field>
+    </record>
+</odoo>
