@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pos_screen_layout.ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('product-screen')]" position="attributes">
+            <attribute name="t-attf-class">product-screen d-flex h-100 {{ pos.config.swap_panes ? 'flex-row-reverse' : '' }}</attribute>
+        </xpath>
+    </t>
+</templates>

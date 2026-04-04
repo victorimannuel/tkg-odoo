@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_gym_membership" model="ir.actions.act_window">
+            <field name="name">Memberships</field>
+            <field name="path">gym-memberships</field>
+            <field name="res_model">gym.membership</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_gym_membership_category" model="ir.actions.act_window">
+            <field name="name">Membership Categories</field>
+            <field name="res_model">product.category</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('gym_category_type', '=', 'membership')]</field>
+            <field name="context">{'default_gym_category_type': 'membership', 'default_name': 'Membership / '}</field>
+        </record>
+
+        <record id="view_gym_membership_list" model="ir.ui.view">
+            <field name="name">gym.membership.list</field>
+            <field name="model">gym.membership</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="price"/>
+                    <field name="duration"/>
+                    <field name="duration_uom"/>
+                    <field name="basis"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_gym_membership_form" model="ir.ui.view">
+            <field name="name">gym.membership.form</field>
+            <field name="model">gym.membership</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="e.g. Monthly Gold"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="category_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="basis"/>
+                                <label for="duration"/>
+                                <div class="o_row">
+                                    <field name="duration"/>
+                                    <field name="duration_uom"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="product_id" context="{'default_type': 'service'}" readonly="1"/>
+                                <field name="price"/>
+                                <field name="session_count"/>
+                                <field name="usage_limit"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Benefits">
+                                <group>
+                                    <group string="Freeze Settings">
+                                        <field name="allow_freeze"/>
+                                        <field name="max_freeze_days" invisible="not allow_freeze"/>
+                                    </group>
+                                </group>
+                                <field name="benefit_ids">
+                                    <list>
+                                        <field name="name"/>
+                                    </list>
+                                    <form>
+                                        <group>
+                                            <field name="access_to"/>
+                                        </group>
+                                        <group>
+                                            <field name="door_all" invisible="access_to != 'door'"/>
+                                            <field name="door_id" invisible="access_to != 'door' or door_all"/>
+                                            
+                                            <field name="class_category_id" invisible="access_to != 'class'" required="access_to == 'class'"/>
+                                            <field name="class_ids" widget="many2many_tags" invisible="access_to != 'class' or not class_category_id" domain="[('category_id', '=', class_category_id)]"/>
+                                            
+                                            <field name="service_category_id" invisible="access_to != 'service'" required="access_to == 'service'"/>
+                                            <field name="service_ids" widget="many2many_tags" invisible="access_to != 'service' or not service_category_id" domain="[('category_id', '=', service_category_id)]"/>
+                                            
+                                            <field name="name"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

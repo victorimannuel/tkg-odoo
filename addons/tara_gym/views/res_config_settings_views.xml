@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_gym" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.tara_gym</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="80"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Gym" string="Gym" name="tara_gym">
+                    <block title="Drop-In">
+                        <setting string="Open Gym" help="Membership automatically assigned when registering a drop-in visitor.">
+                            <field name="gym_drop_in_visit_membership_id" options="{'no_create': True}"/>
+                        </setting>
+                        <setting string="Class Enrollment" help="Membership automatically assigned when registering a class enrollment for members without an active subscription.">
+                            <field name="gym_drop_in_membership_id" options="{'no_create': True}"/>
+                        </setting>
+                    </block>
+                    <block title="Point of Sale">
+                        <setting string="POS Config" help="Point of Sale used for gym transactions (e.g. drop-in payments).">
+                            <field name="gym_pos_config_id" options="{'no_create': True}"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

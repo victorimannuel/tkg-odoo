@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Member Tags -->
+        <record id="tag_vip" model="gym.member.tag">
+            <field name="name">VIP</field>
+            <field name="color">1</field>
+        </record>
+        <record id="tag_trial" model="gym.member.tag">
+            <field name="name">Trial</field>
+            <field name="color">2</field>
+        </record>
+
+        <!-- Trainer Specialties -->
+        <record id="specialty_yoga" model="gym.trainer.specialty">
+            <field name="name">Yoga</field>
+        </record>
+        <record id="specialty_hiit" model="gym.trainer.specialty">
+            <field name="name">HIIT</field>
+        </record>
+        <record id="specialty_bodybuilding" model="gym.trainer.specialty">
+            <field name="name">Bodybuilding</field>
+        </record>
+    </data>
+</odoo>

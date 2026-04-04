@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions for creating from calendar -->
+    <record id="action_schedule_create_class" model="ir.actions.act_window">
+        <field name="name">Create Class Session</field>
+        <field name="res_model">gym.class.session</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_schedule_create_service" model="ir.actions.act_window">
+        <field name="name">Create Service Booking</field>
+        <field name="res_model">gym.service.booking</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="view_gym_schedule_quick_view" model="ir.ui.view">
+        <field name="name">gym.schedule.quick.view</field>
+        <field name="model">gym.schedule</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form string="Event Summary">
+                <sheet>
+                    <div class="oe_title">
+                        <h2><field name="name"/></h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="booking_type" widget="badge" decoration-info="booking_type == 'class'" decoration-warning="booking_type == 'service'"/>
+                            <field name="start_datetime"/>
+                        </group>
+                        <group>
+                            <field name="trainer_id"/>
+                            <field name="state" widget="badge"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_open_record" type="object" string="EDIT" class="btn-primary" icon="fa-pencil"/>
+                        <button string="Tutup" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_gym_schedule_quick_create" model="ir.ui.view">
+        <field name="name">gym.schedule.quick.create</field>
+        <field name="model">gym.schedule</field>
+        <field name="priority">2000</field>
+        <field name="arch" type="xml">
+            <form string="Add Booking">
+                <sheet>
+                    <div class="text-center mb-4">
+                        <p class="text-muted">Time: <field name="start_datetime" widget="datetime" readonly="1"/> - <field name="end_datetime" widget="datetime" readonly="1"/></p>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <button name="%(action_schedule_create_class)d" type="action" string="ADD CLASS" class="btn-primary btn-lg w-100" icon="fa-users" style="height: 100px; font-size: 18px;"/>
+                        </div>
+                        <div class="col-6">
+                            <button name="%(action_schedule_create_service)d" type="action" string="ADD SERVICE" class="btn-warning btn-lg w-100" icon="fa-user" style="height: 100px; font-size: 18px;"/>
+                        </div>
+                    </div>
+                    <footer class="mt-4">
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_gym_schedule_calendar" model="ir.ui.view">
+        <field name="name">gym.schedule.calendar</field>
+        <field name="model">gym.schedule</field>
+        <field name="arch" type="xml">
+            <calendar string="Schedule"
+                      js_class="gym_schedule_calendar"
+                      date_start="start_datetime"
+                      date_stop="end_datetime"
+                      color="room_color"
+                      quick_create="0"
+                      form_view_id="%(view_gym_schedule_quick_view)d"
+                      event_open_popup="true"
+                      mode="day">
+                <field name="name"/>
+                <field name="trainer_id"/>
+                <field name="booking_type"/>
+                <field name="room_id"/>
+                <field name="room_color"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_gym_schedule_list" model="ir.ui.view">
+        <field name="name">gym.schedule.list</field>
+        <field name="model">gym.schedule</field>
+        <field name="arch" type="xml">
+            <list string="Schedule">
+                <field name="start_datetime"/>
+                <field name="name"/>
+                <field name="res_reference" widget="reference" string="Link Original"/>
+                <field name="booking_type" widget="badge" decoration-info="booking_type == 'class'" decoration-warning="booking_type == 'service'"/>
+                <field name="trainer_id"/>
+                <field name="state" widget="badge"/>
+                <button name="action_open_record" type="object" string="Edit" icon="fa-pencil"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gym_schedule_form_create" model="ir.ui.view">
+        <field name="name">gym.schedule.form.create</field>
+        <field name="model">gym.schedule</field>
+        <field name="priority">3000</field>
+        <field name="arch" type="xml">
+            <form string="Create New Schedule">
+                <sheet>
+                    <div class="text-center mb-4">
+                        <h3>Create New Schedule</h3>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <button name="%(action_schedule_create_class)d" type="action" string="Add Class" class="btn-primary btn-lg w-100" icon="fa-users" style="height: 100px;"/>
+                        </div>
+                        <div class="col-6">
+                            <button name="%(action_schedule_create_service)d" type="action" string="Add Service" class="btn-warning btn-lg w-100" icon="fa-user" style="height: 100px;"/>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_schedule" model="ir.actions.act_window">
+        <field name="name">Schedule</field>
+        <field name="path">gym-schedule</field>
+        <field name="res_model">gym.schedule</field>
+        <field name="view_mode">calendar,list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No events scheduled yet.
+            </p>
+        </field>
+    </record>
+</odoo>

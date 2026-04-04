@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_class_enrollment_list" model="ir.ui.view">
+        <field name="name">gym.class.enrollment.list</field>
+        <field name="model">gym.class.enrollment</field>
+        <field name="arch" type="xml">
+            <list string="Class Enrollments" create="0" edit="0" delete="0">
+                <field name="session_id"/>
+                <field name="start_datetime" string="Start"/>
+                <field name="end_datetime" string="End"/>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'attended'"
+                    decoration-warning="state == 'confirmed'"/>
+            </list>
+        </field>
+    </record>
+</odoo>

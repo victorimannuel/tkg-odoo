@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Record Rules if needed (e.g., partners can only see their own credits) -->
+        <!-- For now, we rely on standard groups -->
+    </data>
+</odoo>

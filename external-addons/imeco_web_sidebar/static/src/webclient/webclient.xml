@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+	<t 
+		t-name="imeco_web_sidebar.WebClient"
+		t-inherit="web.WebClient" 
+		t-inherit-mode="extension" 
+	>
+	    <xpath expr="//NavBar" position="after">
+	    	<SideBar/>
+	    </xpath>
+	</t>
+	
+</templates>

@@ -1,0 +1,85 @@
+.o_calendar_day_custom {
+    .calendar-grid-wrapper {
+        min-width: 600px;
+        /* Prevent crushing columns on small screens */
+    }
+
+    .calendar-header-cell {
+        background-color: var(--Calendar-bg, #ffffff);
+        border-color: var(--border-color, #dee2e6) !important;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .time-header {
+        z-index: 11;
+        /* Keep top-left corner above everything */
+        background-color: var(--Calendar-bg, #ffffff);
+    }
+
+    .time-axis {
+        border-color: var(--border-color, #dee2e6) !important;
+        background-color: #fafafa;
+        padding-top: 8px;
+        /* Room for 00:00 label */
+    }
+
+    .room-column {
+        border-color: var(--border-color, #dee2e6) !important;
+        padding-top: 8px;
+        /* Sync with time axis */
+
+        .bg-time-slot {
+            border-bottom-color: var(--border-color, #e9ecef) !important;
+
+            &.slot-unavailable {
+                background-color: #f0f0f0;
+                background-image: repeating-linear-gradient(45deg,
+                        transparent,
+                        transparent 10px,
+                        #e8e8e8 10px,
+                        #e8e8e8 11px);
+                opacity: 0.7;
+            }
+        }
+
+        .custom-event {
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: var(--fc-event-bg-color, #7c7bad);
+            color: var(--fc-event-text-color, #fff);
+
+            &:hover {
+                transform: scale(1.02);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                z-index: 5;
+            }
+
+            .event-inner {
+                /* In case the background color is very light, ensure text contrast */
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+
+    /* Scrollbar styling for better look */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+}

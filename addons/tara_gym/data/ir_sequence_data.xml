@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Member Code Sequence -->
+        <record id="seq_gym_member" model="ir.sequence">
+            <field name="name">Gym Member</field>
+            <field name="code">gym.member</field>
+            <field name="prefix">MEM/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Subscription Sequence -->
+        <record id="seq_gym_subscription" model="ir.sequence">
+            <field name="name">Gym Subscription</field>
+            <field name="code">gym.membership.subscription</field>
+            <field name="prefix">SUB/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_referrer" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.referrer</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='catalog_setting_container']" position="after">
+                <block title="Referrer Program" name="referrer_program_setting_container">
+                    <setting id="referrer_commission_setting" help="Set the default commission percentage for referrers.">
+                        <field name="referrer_commission_percentage"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <label for="referrer_commission_percentage" string="Commission %"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="referrer_accounting_setting" help="Configure accounting for referrer commissions.">
+                        <group>
+                            <field name="referrer_journal_id"/>
+                            <field name="referrer_expense_account_id"/>
+                            <field name="referrer_liability_account_id"/>
+                        </group>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

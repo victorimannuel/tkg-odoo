@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Avenir';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Avenir'), url('https://fonts.cdnfonts.com/s/71748/avenir_roman_12.woff') format('woff');
+}
+
+/* FIX: NOT WORKING */
+@font-face {
+    font-family: 'Avenir-Black';
+    src: url('bvc_invoice/static/src/fonts/Avenir-Black.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Avenir-Book';
+    src: url('/bvc_invoice/static/src/fonts/Avenir-Book.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Avenir-Heavy';
+    src: url('/bvc_invoice/static/src/fonts/Avenir-Heavy.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Avenir-Light';
+    src: url('/bvc_invoice/static/src/fonts/Avenir-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Avenir-Regular';
+    src: url('../fonts/Avenir-Regular.ttf') format('truetype');
+}

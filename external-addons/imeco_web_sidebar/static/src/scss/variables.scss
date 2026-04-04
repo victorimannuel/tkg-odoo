@@ -1,0 +1,9 @@
+// Default variables for the sidebar module
+// These can be overridden by colors.scss at runtime in the asset bundle.
+
+$sidebar-text: #DEE2E6 !default;
+$sidebar-active: #5D8DA8 !default;
+$sidebar-background: #111827 !default;
+
+$sidebar-large-width: 150px !default;
+$sidebar-small-width: 46px !default;

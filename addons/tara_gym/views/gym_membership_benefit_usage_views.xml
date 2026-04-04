@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_membership_benefit_usage_list" model="ir.ui.view">
+        <field name="name">gym.membership.benefit.usage.list</field>
+        <field name="model">gym.membership.benefit.usage</field>
+        <field name="arch" type="xml">
+            <list string="Membership Usage" create="0" edit="0" delete="0">
+                <field name="benefit_name"/>
+                <field name="access_to"/>
+                <field name="used_count"/>
+                <field name="usage_display" string="Usage"/>
+            </list>
+        </field>
+    </record>
+</odoo>

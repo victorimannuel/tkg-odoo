@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+	<t t-name="imeco_web_sidebar.SideBar">
+		<div class="sidebar_panel">
+			<div class="sidebar">
+				<ul class="sidebar_menu">
+                    <t t-set="currentAppId" t-value="this.appMenuService.getCurrentApp()?.id" />
+                    <t t-foreach="this.appMenuService.getAppSections(currentAppId)" t-as="section" t-key="section.id">
+                        <t t-call="imeco_web_sidebar.SideBar.RootSection">
+                            <t t-set="section" t-value="section" />
+                        </t>
+                    </t>
+
+				    <!-- <t t-foreach="this.appMenuService.getAppsMenuItems()" t-as="app" t-key="app.id">
+			            <li t-attf-class="nav-item {{ app.id === this.appMenuService.getCurrentApp()?.id ? 'active' : '' }}">
+			            	<a 
+			            		t-att-href="app.href"
+		            			t-att-data-menu-id="app.id" 
+		            			t-att-data-menu-xmlid="app.xmlid" 
+		            			t-att-data-action-id="app.actionID"
+								t-on-click.prevent="() => this._onAppClick(app)"
+		            			class="nav-link" 
+		            			role="menuitem"
+		            		>
+			                	<img 
+			                		t-if="app.webIconData" 
+			                		class="sidebar_icon" 
+			                		t-att-src="app.webIconData"
+			                	/>
+			                	<img  
+			                		t-else="" 
+			                		class="sidebar_icon" 
+			                		src="/base/static/description/icon.png"
+			                	/>
+						        <span class="sidebar_name">
+						            <t t-out="app.label"/>
+						        </span>
+			            	 </a>
+			            </li>
+			    	</t> -->
+				</ul>
+				<div t-if="sidebarImageUrl" class="sidebar_logo p-2">
+					<img class="img-fluid mx-auto" t-att-src="sidebarImageUrl" alt="Logo"/>
+				</div>
+			</div>
+		</div>
+	</t>
+    <t t-name="imeco_web_sidebar.SideBar.RootSection">
+        <li
+            t-attf-class="nav-item {{ this._isSectionActive(section) ? 'active' : '' }} {{ section.childrenTree.length ? 'has-children' : '' }}"
+            t-on-mouseenter="(ev) => this._onRootSectionEnter(section, ev.currentTarget)"
+            t-on-mouseleave="() => this._onRootSectionLeave()"
+        >
+            <a
+                t-att-href="section.href"
+                t-att-data-menu-id="section.id"
+                t-att-data-menu-xmlid="section.xmlid"
+                t-att-data-action-id="section.actionID"
+                t-on-click.prevent="() => this._onSectionClick(section)"
+                class="nav-link"
+                role="menuitem"
+            >
+                <span class="sidebar_name">
+                    <t t-out="section.name" />
+                </span>
+            </a>
+            <t t-if="section.childrenTree.length">
+                <div class="sidebar_flyout">
+                    <ul class="sidebar_submenu">
+                        <t t-foreach="section.childrenTree" t-as="child" t-key="child.id">
+                            <t t-call="imeco_web_sidebar.SideBar.Section">
+                                <t t-set="section" t-value="child" />
+                            </t>
+                        </t>
+                    </ul>
+                </div>
+            </t>
+        </li>
+    </t>
+	<t t-name="imeco_web_sidebar.SideBar.Section">
+        <li
+            t-attf-class="nav-item {{ this._isSectionActive(section) ? 'active' : '' }} {{ section.childrenTree.length ? 'has-children' : '' }}"
+            t-on-mouseenter="(ev) => this._onRootSectionEnter(section, ev.currentTarget)"
+            t-on-mouseleave="() => this._onRootSectionLeave()"
+        >
+            <a
+                t-att-href="section.href"
+                t-att-data-menu-id="section.id"
+                t-att-data-menu-xmlid="section.xmlid"
+                t-att-data-action-id="section.actionID"
+                t-on-click.prevent="() => this._onSectionClick(section)"
+                class="nav-link"
+                role="menuitem"
+            >
+                <span class="sidebar_name">
+                    <t t-out="section.name" />
+                </span>
+            </a>
+            <t t-if="section.childrenTree.length">
+                <ul class="sidebar_submenu">
+                    <t t-foreach="section.childrenTree" t-as="child" t-key="child.id">
+                        <t t-call="imeco_web_sidebar.SideBar.Section">
+                            <t t-set="section" t-value="child" />
+                        </t>
+                    </t>
+                </ul>
+            </t>
+        </li>
+    </t>
+	
+</templates>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Search View -->
+        <record id="view_gym_member_search" model="ir.ui.view">
+            <field name="name">gym.member.search</field>
+            <field name="model">gym.member</field>
+            <field name="arch" type="xml">
+                <search string="Search Members">
+                    <field name="name"/>
+                    <!-- <field name="firstname"/> -->
+                    <!-- <field name="surname"/>
+                    <field name="member_code"/>
+                    <field name="email"/>
+                    <field name="phone"/> -->
+                    <separator/>
+                    <!-- <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'membership_status'}"/>
+                        <filter string="Gender" name="group_by_gender" context="{'group_by': 'gender'}"/>
+                    </group> -->
+                </search>
+            </field>
+        </record>
+
+        <!-- List View -->
+        <record id="view_gym_member_list" model="ir.ui.view">
+            <field name="name">gym.member.list</field>
+            <field name="model">gym.member</field>
+            <field name="arch" type="xml">
+                <list string="Members" decoration-danger="membership_status == 'expired'" decoration-success="membership_status == 'active'">
+                    <field name="member_code"/>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="membership_status" widget="badge" 
+                           decoration-success="membership_status == 'active'"
+                           decoration-warning="membership_status == 'frozen'"
+                           decoration-danger="membership_status == 'expired'"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_gym_member_form" model="ir.ui.view">
+            <field name="name">gym.member.form</field>
+            <field name="model">gym.member</field>
+            <field name="arch" type="xml">
+                <form string="Member">
+                    <header>
+                        <button name="action_checkin" string="Check In" type="object" class="oe_highlight" invisible="is_checked_in"/>
+                        <button name="action_checkout" string="Check Out" type="object" class="btn-danger" invisible="not is_checked_in" confirm="Confirm check out?"/>
+                        <button name="action_add_membership" string="Add Membership" type="object" class="oe_highlight"/>
+                        <field name="membership_status" widget="statusbar" statusbar_visible="active,expired,none"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_pos_orders" type="object" class="oe_stat_button" icon="fa-shopping-bag">
+                                <field name="pos_order_count" widget="statinfo" string="POS Orders"/>
+                            </button>
+                            <button name="action_view_visit" type="object" class="oe_stat_button" icon="fa-history">
+                                <field name="visit_count" widget="statinfo" string="Visit History"/>
+                            </button>
+                        </div>
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" force_save="1" placeholder="Complete Name"/>
+                            </h1>
+                            <!-- <div class="o_row">
+                                <label for="firstname" string="First Name"/>
+                                <field name="firstname" placeholder="First Name" required="1"/>
+                                <field name="surname" placeholder="Surname"/>
+                            </div> -->
+                            <!-- <h3>
+                                <field name="member_code"/>
+                            </h3> -->
+                        </div>
+                        <notebook>
+                            <page string="Details">
+                                <group col="3">
+                                    <group string="Details">
+                                        <field name="firstname" placeholder="First Name"/>
+                                        <field name="surname" placeholder="Last Name"/>
+                                        <field name="date_of_birth" widget="date" placeholder="Date of Birth"/>
+                                        <field name="gender" wdiget="radio" placeholder="Gender"/>
+                                        <field name="comment" placeholder="Note"/>
+                                    </group>
+                                    <group string="Contact">
+                                        <field name="email" placeholder="Email"/>
+                                        <field name="phone" placeholder="Phone"/>
+                                    </group>
+                                    <group string="Address">
+                                        <field name="street" placeholder="Street"/>
+                                        <field name="city" placeholder="City"/>
+                                        <!-- <field name="state_id" placeholder="State"/> -->
+                                        <field name="zip" string="Postal Code" placeholder="Postal Code"/>
+                                    </group>
+                                    <group string="Marketing">
+                                        <field name="user_id" string="Sales Representative" placeholder="Sales Representative"/>
+                                        <field name="marketing_source" placeholder="Source Promotion"/>
+                                        <field name="referrer_member_id" string="Referred by Member" placeholder="Referred by Member"/>
+                                    </group>
+                                    <group string="Additional Details">
+                                        <!-- <field name="trainer_id"/> -->
+                                        <field name="join_date" placeholder="Join Date"/>
+                                        <field name="function" string="Occupation" placeholder="Occupation"/>
+                                        <field name="parent_id" string="Organisation" placeholder="Organisation"/>
+                                        <field name="partner_id" string="Partner Record" readonly="1" required="0"/>
+                                    </group>
+                                    <group>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Membership">
+                                <group string="Membership History">
+                                    <field name="subscription_ids" readonly="1" nolabel="1" colspan="2">
+                                        <list decoration-muted="state == 'expired'" decoration-info="state == 'draft'" decoration-success="state == 'running'">
+                                            <field name="membership_id"/>
+                                            <field name="price"/>
+                                            <field name="date_start"/>
+                                            <field name="visit_usage_display"/>
+                                            <button name="action_view_usage"
+                                                    type="object"
+                                                    string="View Usage"
+                                                    icon="fa-eye"
+                                                    class="btn-link"/>
+                                            <field name="date_end"/>
+                                            <field name="state" widget="badge"
+                                                decoration-success="state == 'running'"
+                                                decoration-info="state == 'draft'"
+                                                decoration-danger="state == 'expired'"/>
+                                            <!-- <button name="action_cancel"
+                                                    type="object"
+                                                    string="Cancel"
+                                                    icon="fa-times"
+                                                    invisible="state == 'canceled'"/>
+                                            <button name="action_delete_if_canceled"
+                                                    type="object"
+                                                    icon="fa-trash"
+                                                    string="Delete"
+                                                    invisible="state != 'canceled'"/> -->
+                                        </list>
+                                    </field>
+                                </group>
+                                <group string="Member Benefits">
+                                    <button name="action_refresh_benefits" string="Refresh Benefits" type="object" icon="fa-refresh" class="btn-link mb-2"/>
+                                    <field name="current_membership_benefit_ids" nolabel="1" colspan="2" readonly="1">
+                                        <list>
+                                            <!-- <field name="subscription_id"/> -->
+                                            <field name="benefit_name"/>
+                                            <field name="access_to"/>
+                                            <field name="usage_display"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+                            <!-- <page string="Health Profile">
+                                <field name="health_ids">
+                                    <list editable="bottom">
+                                        <field name="date"/>
+                                        <field name="height"/>
+                                        <field name="weight"/>
+                                        <field name="bmi"/>
+                                        <field name="fat_percentage"/>
+                                        <field name="notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Documents">
+                                <field name="document_ids">
+                                    <list editable="bottom">
+                                        <field name="type"/>
+                                        <field name="name"/>
+                                        <field name="expiry_date"/>
+                                        <field name="file" filename="name"/>
+                                    </list>
+                                </field>
+                            </page> -->
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Kanban View -->
+        <record id="view_gym_member_kanban" model="ir.ui.view">
+            <field name="name">gym.member.kanban</field>
+            <field name="model">gym.member</field>
+            <field name="arch" type="xml">
+                <kanban default_order="is_checked_in desc, name asc">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="image_128"/>
+                    <field name="current_subscription_id"/>
+                    <field name="membership_status"/>
+                    <field name="is_checked_in"/>
+                    <templates>
+                        <t t-name="card" class="flex-row align-items-center">
+                            <aside class="me-4">
+                                <div class="rounded-circle overflow-hidden" style="width:80px; height:80px;">
+                                    <t t-if="record.image_128.raw_value">
+                                        <field name="image_128" widget="image" alt="Member" options="{'img_class': 'w-100 h-100 object-fit-cover'}"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img t-if="record.gender.raw_value == 'male'" alt="Member" t-att-src="'/tara_gym/static/src/img/man_gym_placeholder.jpg'" class="w-100 h-100 object-fit-cover"/>
+                                        <img t-elif="record.gender.raw_value == 'female'" alt="Member" t-att-src="'/tara_gym/static/src/img/woman_gym_placeholder.jpg'" class="w-100 h-100 object-fit-cover"/>
+                                        <img t-else="" alt="Member" t-att-src="'/tara_gym/static/src/img/other_gym_placeholder.svg'" class="w-100 h-100 object-fit-contain"/>
+                                    </t>
+                                </div>
+                            </aside>
+                            <main>
+                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                    <!-- <div class="o_kanban_image"> -->
+                                        <!-- <img alt="Avatar" t-att-src="kanban_image('gym.member', 'image_128', record.id.raw_value)"/> -->
+                                    <!-- </div> -->
+                                    <div class="oe_kanban_details">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <div class="o_kanban_tags_section">
+                                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                        </div>
+                                        <p style="color: gray;">
+                                            Status: <field name="membership_status"/>
+                                            <br/>
+                                            <field name="current_subscription_membership_id"/>
+                                        </p>
+                                        <footer class="w-100 justify-content-between">
+                                            <div class="text-end">
+                                                <button name="action_checkin" type="object" string="Check In" class="btn btn-primary btn-sm" invisible="is_checked_in">Check In</button>
+                                                <button name="action_checkout" type="object" string="Check Out" class="btn btn-danger btn-sm" invisible="not is_checked_in" confirm="Confirm check out?">Check Out</button>
+                                            </div>
+                                        </footer>
+                                        <div class="o_kanban_record_bottom mt-2">
+                                            <div class="oe_kanban_bottom_left"/>
+                                            <div class="oe_kanban_bottom_right">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Actions -->
+        <record id="action_gym_member" model="ir.actions.act_window">
+            <field name="name">Members</field>
+            <field name="path">gym-members</field>
+            <field name="res_model">gym.member</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="search_view_id" ref="view_gym_member_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first gym member!
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

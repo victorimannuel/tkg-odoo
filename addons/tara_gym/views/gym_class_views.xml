@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_gym_class" model="ir.actions.act_window">
+            <field name="name">Classes</field>
+            <field name="path">gym-classes</field>
+            <field name="res_model">gym.class</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_gym_class_category" model="ir.actions.act_window">
+            <field name="name">Class Categories</field>
+            <field name="res_model">product.category</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('gym_category_type', '=', 'class')]</field>
+            <field name="context">{'default_gym_category_type': 'class', 'default_name': 'Class / '}</field>
+        </record>
+
+        <record id="view_gym_class_list" model="ir.ui.view">
+            <field name="name">gym.class.list</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="duration"/>
+                    <field name="price" widget="monetary"/>
+                    <field name="capacity"/>
+                    <field name="color" widget="color_picker"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_gym_class_form" model="ir.ui.view">
+            <field name="name">gym.class.form</field>
+            <field name="model">gym.class</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Class Name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="category_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="color" widget="color_picker"/>
+                            </group>
+                            <group>
+                                <field name="duration"/>
+                                <field name="price" widget="monetary"/>
+                                <field name="capacity"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

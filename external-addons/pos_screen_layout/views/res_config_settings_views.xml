@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_pos_screen_layout" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.pos_screen_layout</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[field[@name='pos_iface_big_scrollbars']]" position="after">
+                <setting string="Swap Left/Right Panes" help="Move the product grid and payment controls to the opposite side" invisible="is_kiosk_mode">
+                    <field name="pos_swap_panes"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_referrer_credit_ledger"
+              name="Referrer Ledger"
+              parent="sale.menu_sale_report"
+              action="action_referrer_credit_ledger"
+              sequence="50"
+              groups="account.group_account_readonly"/>
+</odoo>

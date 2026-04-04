@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_referrer_credit_ledger_user,referrer.credit.ledger.user,model_referrer_credit_ledger,base.group_user,1,0,0,0
+access_referrer_credit_ledger_manager,referrer.credit.ledger.manager,model_referrer_credit_ledger,account.group_account_manager,1,1,1,0
+access_apply_referrer_credit_wizard,apply.referrer.credit.wizard,model_apply_referrer_credit_wizard,base.group_user,1,1,1,1

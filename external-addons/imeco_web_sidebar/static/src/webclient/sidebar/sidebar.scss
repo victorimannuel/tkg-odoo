@@ -1,0 +1,204 @@
+.sidebar_panel {
+    @include sidebar-disable-scrollbar();
+    background-color: $sidebar-background;
+    width: var(--sidebar-width, 0);
+    overflow-y: auto;
+    overflow-x: visible;
+    position: relative;
+    // z-index: 1200;
+    .sidebar {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+	    white-space: nowrap;
+	    .sidebar_menu {
+	    	padding: 0;
+            list-style: none;
+            > li {
+                position: relative;
+            }
+		    > li > a {
+		        cursor: pointer;
+	            font-size: 15px;
+	            font-weight: 400;
+	            overflow: hidden;
+	            padding: 8px 12px;
+	            text-decoration: none;
+	            color: $sidebar-text;
+	            text-overflow: ellipsis;
+	            .sidebar_icon {
+				    width: 22px;
+				    height: 22px;
+	    			margin-right: 5px;
+				}
+		    }
+	        > li.active > a {
+			    background: $sidebar-active;
+	        }
+	        > li:hover > a {
+			    background: $sidebar-active;
+	        }
+            .sidebar_submenu {
+                display: none;
+                list-style: none;
+                margin: 0;
+                padding-left: 12px;
+                li > a {
+                    cursor: pointer;
+                    font-size: 15px;
+                    font-weight: 400;
+                    overflow: hidden;
+                    padding: 6px 11px;
+                    text-decoration: none;
+                    color: $sidebar-text;
+                    text-overflow: ellipsis;
+                }
+                li.active > a {
+                    background: $sidebar-active;
+                }
+                li:hover > a {
+                    background: $sidebar-active;
+                }
+            }
+	    }
+	}
+}
+
+.sidebar_flyout {
+    position: absolute;
+    top: 0;
+    left: var(--sidebar-width, 0);
+    height: 100%;
+    min-width: 220px;
+    background-color: $sidebar-active;
+    padding: 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1300;
+    .sidebar_submenu {
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 0 8px;
+        li > a {
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 400;
+            overflow: hidden;
+            padding: 6px 12px;
+            text-decoration: none;
+            color: $sidebar-text;
+            text-overflow: ellipsis;
+        }
+        li.active > a {
+            background: $sidebar-active;
+        }
+        li:hover > a {
+            background: $sidebar-active;
+        }
+    }
+}
+
+.sidebar_apps_submenu_popup {
+    position: fixed;
+    min-width: 220px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: $sidebar-background;
+    color: $sidebar-text;
+    padding: 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    z-index: 5000;
+}
+
+.sidebar_apps_submenu_popup_list {
+    list-style: none;
+    margin: 0;
+    padding: 0 8px;
+}
+
+.sidebar_apps_submenu_popup_item {
+    font-size: 15px;
+    font-weight: 400;
+    padding: 4px 8px;
+    white-space: nowrap;
+}
+
+.sidebar_apps_submenu_popup_item--actionable {
+    cursor: pointer;
+}
+
+.sidebar_apps_submenu_popup_item--actionable:hover {
+    background-color: $sidebar-active;
+}
+
+.sidebar_apps_submenu_popup_item--section {
+    font-weight: 600;
+    color: rgba($sidebar-text, 0.7);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    margin-top: 4px;
+    border-top: 1px solid rgba($sidebar-text, 0.08);
+}
+
+.sidebar_type_large {
+	--sidebar-width: #{$sidebar-large-width};
+}
+
+.sidebar_type_small {
+	--sidebar-width: #{$sidebar-small-width};
+	.sidebar_name {
+		display: none;
+	}
+	.sidebar_icon {
+		margin-right: 0 !important;
+	}
+   	.sidebar_logo {
+		display: none;
+	}
+}
+
+.sidebar_type_invisible {
+	--sidebar-width: 0;
+}
+
+.editor_has_snippets_hide_backend_navbar,
+.o_home_menu_background,
+.o_fullscreen {
+	--sidebar-width: 0;
+}
+
+.editor_has_snippets_hide_backend_navbar .sidebar_panel {
+    transition: width 300ms;
+}
+
+@include media-breakpoint-only(md) {
+	.sidebar_type_large {
+		--sidebar-width: #{$sidebar-small-width};
+		.sidebar_name {
+			display: none;
+		}
+		.sidebar_icon {
+			margin-right: 0 !important;
+		}
+	   	.sidebar_logo {
+			display: none;
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.sidebar_type_large, .sidebar_type_small {
+		--sidebar-width: 0;
+	}
+}
+
+@media print {
+	.sidebar_type_large, .sidebar_type_small {
+		--sidebar-width: 0;
+	}
+}

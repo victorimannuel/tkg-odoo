@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_gym_membership_subscription" model="ir.actions.act_window">
+            <field name="name">Subscriptions</field>
+            <field name="path">gym-membership-subscriptions</field>
+            <field name="res_model">gym.membership.subscription</field>
+            <field name="view_mode">list,form,pivot,graph</field>
+        </record>
+
+        <record id="view_gym_membership_subscription_list" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.list</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <list decoration-muted="state == 'expired'" decoration-info="state == 'draft'" decoration-success="state == 'running'">
+                    <field name="name"/>
+                    <field name="member_id"/>
+                    <field name="membership_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'running'"
+                           decoration-info="state == 'draft'"
+                           decoration-warning="state == 'frozen'"
+                           decoration-danger="state == 'expired'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_gym_membership_subscription_quick_form" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.quick.form</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_id" invisible="1"/>
+                                <field name="membership_category_id" domain="[('gym_category_type', '=', 'membership')]"/>
+                                <field name="membership_id" domain="[('category_id', '=', membership_category_id)]"/>
+                            </group>
+                            <group>
+                                <field name="date_start" invisible="membership_id == False"/>
+                                <field name="date_end" invisible="membership_id == False" readonly="1"/>
+                                <field name="price" invisible="membership_id == False"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_gym_membership_subscription_form" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.form</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="btn-secondary" invisible="state == 'canceled'"/>
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object" class="btn-secondary" invisible="state != 'canceled'"/>
+                        <button name="action_freeze" string="Freeze" type="object" invisible="state != 'running'"/>
+                        <!-- <button name="unlink" string="Delete" type="object" class="btn-danger" invisible="state != 'canceled'"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,running,expired"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="member_id" invisible="1"/>
+                                <field name="membership_category_id" domain="[('gym_category_type', '=', 'membership')]"/>
+                                <field name="membership_id" domain="[('category_id', '=', membership_category_id)]"/>
+                                <field name="price" invisible="membership_id == False"/>
+                            </group>
+                            <group>
+                                <field name="date_start" invisible="membership_id == False"/>
+                                <field name="date_end" invisible="membership_id == False" readonly="1"/>
+                                <field name="visit_usage_display" string="Usage Status"/>
+                                <field name="total_sessions" invisible="total_sessions == 0"/>
+                                <field name="remaining_sessions" invisible="total_sessions == 0"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Invoices" name="invoices">
+                                <field name="invoice_ids"/>
+                            </page>
+                            <page string="Freezes" name="freezes">
+                                <field name="freeze_ids">
+                                    <list>
+                                        <field name="date_start"/>
+                                        <field name="date_end"/>
+                                        <field name="reason"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_gym_membership_subscription_pivot" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.pivot</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <pivot string="Subscriptions Analysis">
+                    <field name="membership_id" type="row"/>
+                    <field name="date_start" type="col" interval="month"/>
+                    <field name="price" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_gym_membership_subscription_graph" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.graph</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <graph string="Subscriptions Analysis" type="bar">
+                    <field name="membership_id" type="row"/>
+                    <field name="price" type="measure"/>
+                </graph>
+            </field>
+        </record>
+    </data>
+</odoo>

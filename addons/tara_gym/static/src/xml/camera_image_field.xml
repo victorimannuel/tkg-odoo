@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="tara_gym.CameraImageField" t-inherit="web.ImageField" t-inherit-mode="primary">
+        <xpath expr="//div[hasclass('d-inline-block')]" position="after">
+            <div t-if="!props.readonly" class="mt-1">
+                <button t-if="!cameraState.active" type="button"
+                        class="btn btn-sm btn-secondary"
+                        t-on-click="onCameraOpen"
+                        title="Take Photo">
+                    <i class="fa fa-camera me-1"/>Take Photo
+                </button>
+                <div t-if="cameraState.active" class="mt-2 text-center">
+                    <video t-ref="video" style="width:100%;max-width:320px;border-radius:8px;border:2px solid #dee2e6;" autoplay="true" playsinline="true"/>
+                    <canvas t-ref="canvas" style="display:none;"/>
+                    <div class="mt-1">
+                        <button type="button" class="btn btn-sm btn-primary me-1" t-on-click="onCameraCapture">
+                            <i class="fa fa-circle me-1"/>Capture
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary" t-on-click="onCameraClose">
+                            <i class="fa fa-times me-1"/>Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

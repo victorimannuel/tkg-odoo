@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+	<t 
+		t-name="imeco_web_sidebar.NavBar"
+		t-inherit="web.NavBar" 
+		t-inherit-mode="extension" 
+	>
+		<!-- <xpath expr="//t[@t-call=&quot;web.NavBar.SectionsMenu&quot;]" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+		</xpath> -->
+		<xpath expr="//t[@t-call=&quot;web.NavBar.SectionsMenu&quot;]" position="replace">
+		</xpath>
+	</t>
+	
+</templates>

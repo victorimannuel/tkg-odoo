@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_gym_service" model="ir.actions.act_window">
+            <field name="name">Services</field>
+            <field name="path">gym-services</field>
+            <field name="res_model">gym.service</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_gym_service_category" model="ir.actions.act_window">
+            <field name="name">Service Categories</field>
+            <field name="res_model">product.category</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('gym_category_type', '=', 'service')]</field>
+            <field name="context">{'default_gym_category_type': 'service', 'default_name': 'Service / '}</field>
+        </record>
+
+        <record id="view_gym_service_list" model="ir.ui.view">
+            <field name="name">gym.service.list</field>
+            <field name="model">gym.service</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="service_type"/>
+                    <field name="duration_hours"/>
+                    <field name="price"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_gym_service_form" model="ir.ui.view">
+            <field name="name">gym.service.form</field>
+            <field name="model">gym.service</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="category_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="service_type"/>
+                                <field name="duration_hours"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="product_id" context="{'type': 'service'}" readonly="1"/>
+                                <field name="price"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+

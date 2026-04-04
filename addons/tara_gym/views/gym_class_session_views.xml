@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_gym_class_session" model="ir.actions.act_window">
+            <field name="name">Class Schedule</field>
+            <field name="path">gym-class-sessions</field>
+            <field name="res_model">gym.class.session</field>
+            <field name="view_mode">calendar,list,form</field>
+        </record>
+
+        <record id="view_gym_class_session_quick_create" model="ir.ui.view">
+            <field name="name">gym.class.session.quick.create</field>
+            <field name="model">gym.class.session</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="class_id" required="1"/>
+                            <field name="room_id"/>
+                        </group>
+                        <group>
+                            <field name="trainer_id" required="1"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_gym_class_session_calendar" model="ir.ui.view">
+            <field name="name">gym.class.session.calendar</field>
+            <field name="model">gym.class.session</field>
+            <field name="arch" type="xml">
+                <calendar string="Classes"
+                          date_start="start_datetime"
+                          date_stop="end_datetime"
+                          color="room_color"
+                          quick_create="1"
+                          quick_create_view_id="%(tara_gym.view_gym_class_session_quick_create)d">
+                    <field name="name"/>
+                    <field name="room_id"/>
+                    <field name="trainer_id"/>
+                    <field name="enrollment_count"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_gym_class_session_form" model="ir.ui.view">
+            <field name="name">gym.class.session.form</field>
+            <field name="model">gym.class.session</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="room_id"/>
+                                <field name="class_id"/>
+                                <field name="trainer_id"/>
+                            </group>
+                            <group>
+                                <field name="start_datetime"/>
+                                <field name="end_datetime"/>
+                                <field name="capacity"/>
+                                <field name="enrollment_count"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Enrollments">
+                                <header>
+                                    <button name="action_add_enrollment" type="object" string="Add Enrollment" class="btn-primary"/>
+                                </header>
+                                <field name="enrollment_ids">
+                                    <list create="0" edit="0" decoration-info="state == 'draft'" decoration-success="state == 'attended'" decoration-warning="state == 'confirmed'">
+                                        <field name="session_id" column_invisible="True"/>
+                                        <field name="member_id"/>
+                                        <field name="price"/>
+                                        <field name="membership_id" readonly="1"/>
+                                        <field name="state" widget="badge" readonly="1" decoration-info="state == 'draft'" decoration-success="state == 'attended'" decoration-warning="state == 'confirmed'"/>
+                                        <button name="action_checkin" type="object" string="Check In" class="oe_highlight" invisible="state != 'confirmed'" confirm="Are you sure you want to check in this member?"/>
+                                    </list>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="member_id" />
+                                                <field name="price" />
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

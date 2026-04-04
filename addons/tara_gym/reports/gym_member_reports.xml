@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_gym_badge" model="report.paperformat">
+            <field name="name">Gym Badge</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">85</field>
+            <field name="page_width">54</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_gym_member_badge" model="ir.actions.report">
+            <field name="name">Print Badge</field>
+            <field name="model">gym.member</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">tara_gym.report_gym_member_badge_template</field>
+            <field name="report_file">tara_gym.report_gym_member_badge_template</field>
+            <field name="print_report_name">'Badge - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_gym_member"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="paperformat_gym_badge"/>
+        </record>
+
+        <template id="report_gym_member_badge_template">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page" style="text-align: center; border: 1px solid black; height: 100%; border-radius: 10px;">
+                        <div style="margin-top: 10px;">
+                            <h3>Imeco Gym</h3>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <img t-if="doc.image_1920" t-att-src="image_data_uri(doc.image_1920)" style="max-height: 120px; border-radius: 50%;"/>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <h4 t-field="doc.name"/>
+                            <span t-field="doc.member_code"/>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', doc.member_code, 200, 200)" style="width: 150px; height: 150px;"/>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 10px;">
+                            <span t-field="doc.membership_status"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

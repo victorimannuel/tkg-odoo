@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="tara_gym.GymScheduleDayRenderer" owl="1">
+        <div class="o_calendar_renderer o_calendar_day_custom d-flex flex-column h-100 bg-view">
+            <div class="calendar-header d-flex align-items-center justify-content-between p-3 border-bottom shadow-sm">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-secondary btn-sm" t-on-click="navigateToday">Today</button>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-secondary" t-on-click="navigatePrevious" title="Previous Day"><i class="fa fa-chevron-left"/></button>
+                        <button class="btn btn-secondary" t-on-click="navigateNext" title="Next Day"><i class="fa fa-chevron-right"/></button>
+                    </div>
+                </div>
+                <h4 class="mb-0 text-primary fw-bold mx-auto"><t t-esc="formattedDate"/></h4>
+            </div>
+            
+            <div class="calendar-grid-wrapper flex-grow-1 overflow-auto position-relative custom-scrollbar">
+                <div class="calendar-grid h-100" t-attf-style="display: grid; grid-template-columns: 80px repeat({{ state.rooms.length + (eventsByRoom['unassigned']?.length ? 1 : 0) }}, 1fr); grid-template-rows: auto 1fr;">
+                    
+                    <!-- Headings -->
+                    <div class="calendar-header-cell time-header sticky-top bg-view border-bottom border-end z-index-2"></div>
+                    <t t-foreach="state.rooms" t-as="room" t-key="room.id">
+                        <div class="calendar-header-cell text-center fw-bold py-2 border-bottom border-end sticky-top bg-view z-index-2">
+                            <span t-esc="room.name"/>
+                        </div>
+                    </t>
+                    <t t-if="eventsByRoom['unassigned'] and eventsByRoom['unassigned'].length > 0">
+                        <div class="calendar-header-cell text-center fw-bold py-2 border-bottom border-end sticky-top bg-view text-muted z-index-2">
+                            No Room
+                        </div>
+                    </t>
+
+                    <!-- Body Context -->
+                    <!-- Time Axis -->
+                    <div class="time-axis border-end">
+                        <t t-foreach="state.hours" t-as="hour" t-key="hour">
+                            <div class="time-slot-label d-flex justify-content-end align-items-start pe-2 text-muted" style="height: 60px;">
+                                <span class="small position-relative" style="top: -8px;" t-esc="hour.endsWith(':00') ? hour : ''"/>
+                            </div>
+                        </t>
+                    </div>
+                    
+                    <!-- Room Columns -->
+                    <t t-foreach="state.rooms" t-as="room" t-key="room.id">
+                        <div class="room-column position-relative border-end h-100">
+                            <!-- Background slots -->
+                            <t t-foreach="state.hours" t-as="hour" t-key="hour">
+                                <t t-set="slotAvailable" t-value="this.isSlotAvailable(room.id, hour)"/>
+                                <div t-attf-class="bg-time-slot w-100 {{ slotAvailable ? '' : 'slot-unavailable' }}" 
+                                     t-on-click="() => slotAvailable and this.onClickTimeSlot(room.id, hour)" 
+                                     t-attf-style="height: 60px; border-bottom: 1px dashed #e9ecef; cursor: {{ slotAvailable ? 'pointer' : 'not-allowed' }}; transition: background 0.2s;">
+                                </div>
+                            </t>
+                            
+                            <!-- Events Absolute Layer -->
+                            <div class="position-absolute w-100 h-100 pe-none" style="top: 0; left: 0;">
+                                <t t-foreach="eventsByRoom[room.id] || []" t-as="evData" t-key="evData.id">
+                                    <div class="custom-event position-absolute pe-auto shadow-sm"
+                                         t-attf-class="{{ evData.colorClass }}"
+                                         t-attf-style="{{ evData.bgStyle }}; top: {{ evData.top }}px; height: {{ evData.height }}px; left: 4px; right: 4px; border-radius: 4px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;"
+                                         t-on-click.stop="(ev) => this.onClickEvent(ev, evData)">
+                                        <div class="event-inner p-1 h-100 overflow-hidden text-white d-flex flex-column">
+                                            <div class="fw-bold small text-truncate leading-tight"><t t-esc="evData.title"/></div>
+                                            <div class="small text-truncate opacity-75"><t t-esc="evData.timeText"/></div>
+                                            <div class="small text-truncate mt-auto" t-if="evData.trainer"><i class="fa fa-user me-1"/> <t t-esc="evData.trainer"/></div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Unassigned Column -->
+                    <t t-if="eventsByRoom['unassigned'] and eventsByRoom['unassigned'].length > 0">
+                        <div class="room-column position-relative border-end bg-light h-100">
+                            <!-- Background slots -->
+                            <t t-foreach="state.hours" t-as="hour" t-key="hour">
+                                <div class="bg-time-slot w-100" 
+                                     t-on-click="() => this.onClickTimeSlot('unassigned', hour)" 
+                                     style="height: 60px; border-bottom: 1px dashed #e9ecef; cursor: pointer;">
+                                </div>
+                            </t>
+                            
+                            <div class="position-absolute w-100 h-100 pe-none" style="top: 0; left: 0;">
+                                <t t-foreach="eventsByRoom['unassigned']" t-as="evData" t-key="evData.id">
+                                    <div class="custom-event position-absolute pe-auto shadow-sm"
+                                         t-attf-class="{{ evData.colorClass }}"
+                                         t-attf-style="{{ evData.bgStyle }}; top: {{ evData.top }}px; height: {{ evData.height }}px; left: 4px; right: 4px; border-radius: 4px; cursor: pointer;"
+                                         t-on-click.stop="(ev) => this.onClickEvent(ev, evData)">
+                                        <div class="event-inner p-1 h-100 overflow-hidden text-white d-flex flex-column">
+                                            <div class="fw-bold small text-truncate leading-tight"><t t-esc="evData.title"/></div>
+                                            <div class="small text-truncate opacity-75"><t t-esc="evData.timeText"/></div>
+                                            <div class="small text-truncate mt-auto" t-if="evData.trainer"><i class="fa fa-user me-1"/> <t t-esc="evData.trainer"/></div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

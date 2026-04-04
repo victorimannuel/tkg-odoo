@@ -1,0 +1,20 @@
+# Ignore sensitive files — DO NOT commit these
+ansible/roles/backup/files/rclone.conf
+ansible/group_vars/all.yml
+
+# Generated addons symlinks (local machine paths)
+addons/
+external-addons/
+
+# Keep example
+!.env.example
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor
+.vscode/
+.idea/
+*.swp

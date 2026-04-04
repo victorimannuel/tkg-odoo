@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="module_category_gym" model="ir.module.category">
+            <field name="name">Gym Management</field>
+            <field name="description">Manage your gym members, memberships, and classes.</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="privilege_gym_management" model="res.groups.privilege">
+            <field name="name">Gym Management</field>
+            <field name="category_id" ref="module_category_gym"/>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_gym_member" model="res.groups">
+            <field name="name">Member</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="comment">Access to own profile and classes via portal.</field>
+        </record>
+
+        <record id="group_gym_trainer" model="res.groups">
+            <field name="name">Trainer</field>
+            <field name="privilege_id" ref="privilege_gym_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Access to assigned classes and attendance.</field>
+        </record>
+
+        <record id="group_gym_front_desk" model="res.groups">
+            <field name="name">Front Desk</field>
+            <field name="privilege_id" ref="privilege_gym_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Access to check-in, payments, and member management.</field>
+        </record>
+
+        <record id="group_gym_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="privilege_gym_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_gym_front_desk')), (4, ref('group_gym_trainer'))]"/>
+            <field name="comment">Full access including reports.</field>
+            <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Record Rules -->
+        
+        <!-- Trainers can only see their own sessions? Or all? Usually all to coordinate, but maybe edit only theirs. -->
+        <!-- Let's give Trainers read access1 to all, but write access maybe restricted? 
+             For now, we'll keep it simple: Managers have full access. -->
+        
+        <!-- Member Portal Rule: Members can only see their own data -->
+        <record id="rule_gym_member_own_data" model="ir.rule">
+            <field name="name">Member: Own Data Only</field>
+            <field name="model_id" ref="model_gym_member"/>
+            <field name="groups" eval="[(4, ref('group_gym_member'))]"/>
+            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        </record>
+
+        <record id="rule_gym_subscription_own_data" model="ir.rule">
+            <field name="name">Subscription: Own Data Only</field>
+            <field name="model_id" ref="model_gym_membership_subscription"/>
+            <field name="groups" eval="[(4, ref('group_gym_member'))]"/>
+            <field name="domain_force">[('member_id.partner_id', '=', user.partner_id.id)]</field>
+        </record>
+
+        <record id="rule_gym_class_enrollment_own_data" model="ir.rule">
+            <field name="name">Enrollment: Own Data Only</field>
+            <field name="model_id" ref="model_gym_class_enrollment"/>
+            <field name="groups" eval="[(4, ref('group_gym_member'))]"/>
+            <field name="domain_force">[('member_id.partner_id', '=', user.partner_id.id)]</field>
+        </record>
+
+        <record id="rule_gym_trainer_own_sessions" model="ir.rule">
+            <field name="name">Trainer: Own Sessions Only (Write)</field>
+            <field name="model_id" ref="model_gym_class_session"/>
+            <field name="groups" eval="[(4, ref('group_gym_trainer'))]"/>
+            <field name="domain_force">[('trainer_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_gym_manager_all_sessions_write" model="ir.rule">
+            <field name="name">Manager: Write All Sessions</field>
+            <field name="model_id" ref="model_gym_class_session"/>
+            <field name="groups" eval="[(4, ref('group_gym_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="rule_gym_trainer_all_sessions_read" model="ir.rule">
+            <field name="name">Trainer: Read All Sessions</field>
+            <field name="model_id" ref="model_gym_class_session"/>
+            <field name="groups" eval="[(4, ref('group_gym_trainer'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

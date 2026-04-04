@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_category_form_view_inherit_gym" model="ir.ui.view">
+            <field name="name">product.category.form.inherit.gym</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="gym_category_type"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Top Level Menu -->
+        <menuitem id="menu_gym_root"
+                  name="Gym"
+                  web_icon="tara_gym,static/description/icon.png"
+                  sequence="10"/>
+
+        <!-- Main Categories -->
+        <menuitem id="menu_gym_dashboard"
+                  name="Dashboard"
+                  parent="menu_gym_root"
+                  sequence="1"/>
+
+        <!-- Main Master Schedule Menu -->
+        <!-- <menuitem id="menu_gym_schedule_master"
+                  name="Master Schedule"
+                  parent="menu_gym_root"
+                  action="action_gym_schedule"
+                  sequence="5"/> -->
+
+        <menuitem id="menu_gym_members"
+                  name="Members"
+                  parent="menu_gym_root"
+                  action="action_gym_member"
+                  sequence="10"/>
+        <menuitem id="menu_gym_drop_in"
+                  name="Drop-In"
+                  parent="menu_gym_members"
+                  action="action_gym_drop_in_wizard"
+                  sequence="10"/>
+                  
+        <menuitem id="menu_gym_visitor"
+                  name="Visitors"
+                  parent="menu_gym_root"
+                  action="action_gym_visitor"
+                  sequence="20"/>
+        <!-- <menuitem id="menu_gym_checkin_log"
+                  name="Access Log"
+                  parent="menu_gym_checkin"
+                  action="action_gym_checkin"
+                  sequence="10"/> -->
+        <!-- <menuitem id="menu_gym_visitor"
+                  name="Visitors"
+                  parent="menu_gym_checkin"
+                  action="action_gym_visitor"
+                  sequence="20"/> -->
+
+        <menuitem id="menu_gym_class_session_schedule"
+                  name="Schedule"
+                  parent="menu_gym_root"
+                  action="action_gym_schedule"
+                  sequence="30"/>
+        <menuitem id="menu_gym_class_schedule"
+                  name="Class Schedule"
+                  parent="menu_gym_class_session_schedule"
+                  action="action_gym_class_session"
+                  sequence="30"
+                  groups="base.group_no_one"/>
+
+
+        <!-- <menuitem id="menu_gym_billing"
+                  name="Billing"
+                  parent="menu_gym_root"
+                  sequence="40"/>
+        <menuitem id="menu_gym_subscription_list"
+                  name="Subscriptions"
+                  parent="menu_gym_billing"
+                  action="action_gym_membership_subscription"
+                  sequence="10"/> -->
+
+        <menuitem id="menu_gym_trainer"
+                  name="Trainers"
+                  parent="menu_gym_root"
+                  action="action_gym_trainer"
+                  sequence="50"/>
+
+        <menuitem id="menu_gym_pos"
+                  name="Point of Sale"
+                  parent="menu_gym_root"
+                  action="point_of_sale.action_pos_config_kanban"
+                  sequence="60"/>
+
+        <menuitem id="menu_gym_stock"
+                  name="Stock"
+                  parent="menu_gym_root"
+                  sequence="70"/>
+        <menuitem id="menu_gym_stock_products"
+                  name="Products"
+                  parent="menu_gym_stock"
+                  action="stock.product_template_action_product"
+                  sequence="10"/>
+        <menuitem id="menu_gym_stock_report"
+                  name="Stock Report"
+                  parent="menu_gym_stock"
+                  action="stock.action_product_stock_view"
+                  sequence="20"/>
+        <menuitem id="menu_gym_stock_physical"
+                  name="Physical Adjustment"
+                  parent="menu_gym_stock"
+                  action="stock.action_view_inventory_tree"
+                  sequence="30"/>
+
+        <!-- <menuitem id="menu_gym_trainer_list"
+                  name="Trainers"
+                  parent="menu_gym_trainers"
+                  action="action_gym_trainer"
+                  sequence="10"/> -->
+
+        <menuitem id="menu_gym_reporting"
+                  name="Reporting"
+                  parent="menu_gym_root"
+                  sequence="90"
+                  groups="group_gym_manager"/>
+
+        <!-- Reporting Submenus -->
+        <menuitem id="menu_gym_report_subscription"
+                  name="Subscription Analysis"
+                  parent="menu_gym_reporting"
+                  action="action_gym_membership_subscription"
+                  sequence="10"/>
+
+        <menuitem id="menu_gym_configuration"
+                  name="Configuration"
+                  parent="menu_gym_root"
+                  sequence="100"
+                  groups="group_gym_manager"/>
+
+        <!-- Configuration -->
+        <!-- Memberships Submenus -->
+        <menuitem id="menu_gym_config_section_membership"
+                  name="Membership"
+                  parent="menu_gym_configuration"
+                  sequence="10"/>
+        <menuitem id="menu_gym_config_membership"
+                  name="Memberships"
+                  parent="menu_gym_config_section_membership"
+                  action="action_gym_membership"
+                  sequence="10"/>
+        <menuitem id="menu_gym_config_membership_category"
+                  name="Membership Categories"
+                  parent="menu_gym_config_section_membership"
+                  action="action_gym_membership_category"
+                  sequence="20"/>
+
+        <!-- Classes and Services -->
+        <menuitem id="menu_gym_config_section_class_and_service"
+                  name="Classes and Services"
+                  parent="menu_gym_configuration"
+                  sequence="20"/>
+        <menuitem id="menu_gym_config_class"
+                  name="Classes"
+                  parent="menu_gym_config_section_class_and_service"
+                  action="action_gym_class"
+                  sequence="10"/>
+        <menuitem id="menu_gym_config_class_category"
+                  name="Class Categories"
+                  parent="menu_gym_config_section_class_and_service"
+                  action="action_gym_class_category"
+                  sequence="20"/>
+        <menuitem id="menu_gym_config_service"
+                  name="Services"
+                  parent="menu_gym_config_section_class_and_service"
+                  action="action_gym_service"
+                  sequence="30"/>
+        <menuitem id="menu_gym_config_service_category"
+                  name="Service Categories"
+                  parent="menu_gym_config_section_class_and_service"
+                  action="action_gym_service_category"
+                  sequence="40"/>
+
+        <!-- Facilities Submenus -->
+        <menuitem id="menu_gym_config_section_facility"
+                  name="Facilities"
+                  parent="menu_gym_configuration"
+                  sequence="30"/>
+        <menuitem id="menu_gym_config_room"
+                  name="Rooms"
+                  parent="menu_gym_config_section_facility"
+                  action="action_gym_room"
+                  sequence="10"/>
+        <menuitem id="menu_gym_config_door"
+                  name="Doors"
+                  parent="menu_gym_config_section_facility"
+                  action="action_gym_door"
+                  sequence="20"/>
+
+        <menuitem id="menu_gym_config_section_other"
+                  name="Others"
+                  parent="menu_gym_configuration"
+                  sequence="40"/>
+        <menuitem id="menu_gym_config_tag"
+                  name="Member Tags"
+                  parent="menu_gym_config_section_other"
+                  action="action_gym_member_tag"
+                  sequence="10"/>
+
+    </data>
+</odoo>

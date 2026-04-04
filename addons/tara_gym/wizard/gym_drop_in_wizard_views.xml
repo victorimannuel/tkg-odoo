@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_drop_in_wizard_form" model="ir.ui.view">
+        <field name="name">gym.drop.in.wizard.form</field>
+        <field name="model">gym.drop.in.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Drop-In Registration">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="firstname" placeholder="First Name"/>
+                            <field name="surname" placeholder="Last Name"/>
+                            <field name="date_of_birth" placeholder="Date of Birth"/>
+                            <field name="gender" placeholder="Gender"/>
+                            <field name="comment" placeholder="Note"/>
+                        </group>
+                        <group>
+                            <field name="email" placeholder="Email"/>
+                            <field name="phone" placeholder="Phone"/>
+                            <field name="image_1920" widget="camera_image" nolabel="0" options="{'preview_image': 'image_1920'}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Register Drop In" type="object" name="action_confirm" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_drop_in_wizard" model="ir.actions.act_window">
+        <field name="name">Drop In</field>
+        <field name="res_model">gym.drop.in.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_drop_in_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_gym_member_tag" model="ir.actions.act_window">
+            <field name="name">Member Tags</field>
+            <field name="path">gym-member-tags</field>
+            <field name="res_model">gym.member.tag</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <!-- Member Tag Views -->
+        <record id="view_gym_member_tag_list" model="ir.ui.view">
+            <field name="name">gym.member.tag.list</field>
+            <field name="model">gym.member.tag</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                </list>
+            </field>
+        </record>
+
+    </data>
+</odoo>

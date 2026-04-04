@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_gymmaster" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.gymmaster</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='integration']" position="inside">
+                <setting id="gymmaster_integration_setting" string="GymMaster Integration"
+                         help="Configure GymMaster connection and manually sync members.">
+                    <div class="content-group">
+                        <div class="mt8">
+                            <label for="gymmaster_base_url"/>
+                            <field name="gymmaster_base_url" class="w-100"/>
+                        </div>
+                        <div class="mt8">
+                            <label for="gymmaster_api_key"/>
+                            <field name="gymmaster_api_key" class="w-100"/>
+                        </div>
+                        <div class="mt16">
+                            <button name="action_sync_gymmaster_members"
+                                    type="object"
+                                    string="Sync Members Now"
+                                    class="btn btn-primary"/>
+                            <button name="action_sync_gymmaster_memberships"
+                                    type="object"
+                                    string="Sync Memberships Now"
+                                    class="btn btn-secondary ms-2"/>
+                            <button name="action_sync_gymmaster_products"
+                                    type="object"
+                                    string="Sync Products Now"
+                                    class="btn btn-secondary ms-2"/>
+                        </div>
+                        <div class="mt16">
+                            <button name="action_sync_gymmaster_member_photos"
+                                    type="object"
+                                    string="Sync Member Photos"
+                                    class="btn btn-secondary"/>
+                        </div>
+                        <div class="mt16">
+                            <button name="action_purge_gym_data"
+                                    type="object"
+                                    string="Delete Gym Data"
+                                    class="btn btn-danger"
+                                    confirm="Confirm deletion?"/>
+                            <button name="action_purge_products"
+                                    type="object"
+                                    string="Delete Products"
+                                    class="btn btn-danger ms-2"
+                                    confirm="This will delete all synced products. Continue?"/>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

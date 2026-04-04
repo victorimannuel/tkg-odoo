@@ -1,0 +1,19 @@
+/* When panes are reversed, adjust the left pane border to be on the left instead of right */
+.product-screen.flex-row-reverse {
+    > .leftpane {
+        border-right: none !important;
+        border-left: 1px solid var(--border-color, #dee2e6) !important;
+    }
+}
+
+/* When panes are reversed on payment screen, adjust left-content border/padding */
+.payment-screen .main-content.flex-row-reverse {
+    > .left-content {
+        padding-right: 0 !important;
+        padding-left: 0.25rem !important;
+    }
+    > .center-content {
+        padding-left: 0 !important;
+        padding-right: 0.5rem !important;
+    }
+}

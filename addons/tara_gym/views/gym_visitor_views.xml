@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="action_gym_visitor" model="ir.actions.act_window">
+            <field name="name">Visitors</field> 
+            <field name="path">gym-visitors</field>
+            <field name="res_model">gym.visitor</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="view_gym_visitor_list" model="ir.ui.view">
+            <field name="name">gym.visitor.list</field>
+            <field name="model">gym.visitor</field>
+            <field name="arch" type="xml">
+                <list decoration-success="status == 'active'">
+                    <field name="member_id"/>
+                    <field name="subscription_id"/>
+                    <field name="door_id"/>
+                    <field name="session_id"/>
+                    <field name="checkin_time"/>
+                    <field name="checkout_time"/>
+                    <field name="status"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_gym_visitor_form" model="ir.ui.view">
+            <field name="name">gym.visitor.form</field>
+            <field name="model">gym.visitor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_id"/>
+                                <field name="subscription_id"/>
+                                <field name="door_id"/>
+                                <field name="session_id"/>
+                                <field name="method"/>
+                            </group>
+                            <group>
+                                <field name="checkin_time"/>
+                                <field name="checkout_time"/>
+                                <field name="status"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

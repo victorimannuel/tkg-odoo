@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_referrer_credit_ledger_tree" model="ir.ui.view">
+        <field name="name">referrer.credit.ledger.tree</field>
+        <field name="model">referrer.credit.ledger</field>
+        <field name="arch" type="xml">
+            <list string="Referrer Credits" create="false" delete="false">
+                <field name="create_date" string="Date"/>
+                <field name="partner_id"/>
+                <field name="source_invoice_id"/>
+                <field name="sale_order_id"/>
+                <field name="account_move_id" optional="hide"/>
+                <field name="credit_type"/>
+                <field name="credit_amount"/>
+                <field name="state" widget="badge" decoration-success="state == 'posted'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_referrer_credit_ledger_form" model="ir.ui.view">
+        <field name="name">referrer.credit.ledger.form</field>
+        <field name="model">referrer.credit.ledger</field>
+        <field name="arch" type="xml">
+            <form string="Referrer Credit" create="false" edit="false" delete="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="source_invoice_id"/>
+                            <field name="sale_order_id"/>
+                        </group>
+                        <group>
+                            <field name="credit_amount"/>
+                            <field name="credit_type"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_referrer_credit_ledger" model="ir.actions.act_window">
+        <field name="name">Referrer Credit Ledger</field>
+        <field name="res_model">referrer.credit.ledger</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

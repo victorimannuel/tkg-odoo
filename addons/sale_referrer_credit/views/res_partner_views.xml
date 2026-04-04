@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_referrer_credit" model="ir.ui.view">
+        <field name="name">res.partner.form.referrer.credit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_referrer_ledger"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-usd">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="referrer_credit_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </span>
+                        <span class="o_stat_text">Referrer Credit</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
