@@ -83,3 +83,5 @@ access_gym_schedule_create_wizard_manager,gym.schedule.create.wizard.manager,mod
 access_gym_schedule_create_wizard_front_desk,gym.schedule.create.wizard.front_desk,model_gym_schedule_create_wizard,group_gym_front_desk,1,1,1,1
 access_gym_drop_in_wizard_manager,gym.drop.in.wizard.manager,model_gym_drop_in_wizard,group_gym_manager,1,1,1,1
 access_gym_drop_in_wizard_front_desk,gym.drop.in.wizard.front_desk,model_gym_drop_in_wizard,group_gym_front_desk,1,1,1,1
+access_gym_quick_add_membership_wizard_manager,gym.quick.add.membership.wizard.manager,model_gym_quick_add_membership_wizard,group_gym_manager,1,1,1,1
+access_gym_quick_add_membership_wizard_front_desk,gym.quick.add.membership.wizard.front_desk,model_gym_quick_add_membership_wizard,group_gym_front_desk,1,1,1,1

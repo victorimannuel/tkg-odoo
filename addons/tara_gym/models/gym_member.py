@@ -1,4 +1,6 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+from odoo.http import request
 
 class GymMember(models.Model):
     _name = 'gym.member'
@@ -107,17 +109,61 @@ class GymMember(models.Model):
 
     def action_add_membership(self):
         self.ensure_one()
-        quick_form = self.env.ref("tara_gym.view_gym_membership_subscription_quick_form")
+        quick_form = self.env.ref("tara_gym.view_gym_quick_add_membership_wizard_form")
         return {
-            'name': _('Add a Membership'),
+            'name': _('Quick Add Membership'),
             'type': 'ir.actions.act_window',
-            'res_model': 'gym.membership.subscription',
+            'res_model': 'gym.quick.add.membership.wizard',
             'view_mode': 'form',
             'view_id': quick_form.id,
             'target': 'new',
             'context': {
                 'default_member_id': self.id,
+                'default_is_new_member': False,
             },
+        }
+
+    def action_open_pos_with_customer(self):
+        self.ensure_one()
+        pos_config_id = int(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'tara_gym.gym_pos_config_id', '0'
+            )
+        )
+        if not pos_config_id:
+            raise UserError(_(
+                "No POS Config set. "
+                "Please configure it in Gym -> Configuration -> Settings."
+            ))
+
+        pos_config = self.env['pos.config'].browse(pos_config_id).exists()
+        if not pos_config:
+            raise UserError(_(
+                "The configured POS Config no longer exists. "
+                "Please update it in Gym -> Configuration -> Settings."
+            ))
+
+        employee = self.env['hr.employee'].sudo().search(
+            [('user_id', '=', self.env.user.id)],
+            limit=1
+        )
+
+        if request:
+            request.session['tara_gym_auto_cashier'] = {
+                'enabled': True,
+                'employee_id': employee.id if employee else False,
+            }
+            if employee:
+                # Compatibility hints for POS login route that may run before POS JS app boot.
+                request.session['pos_employee_id'] = employee.id
+                request.session['pos_hr_employee_id'] = employee.id
+                request.session['cashier_employee_id'] = employee.id
+                request.session['pos_user_id'] = self.env.user.id
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/pos/ui/%d' % pos_config.id,
+            'target': 'self',
         }
 
     def action_checkin(self):

@@ -162,3 +162,14 @@ class GymCustomerPortal(CustomerPortal):
             'page_name': 'gym_trainer_session',
         })
         return request.render("tara_gym.portal_my_gym_trainer_session_detail", values)
+
+
+class GymPosController(http.Controller):
+
+    @http.route('/tara_gym/pos_auto_cashier_payload', type='json', auth='user')
+    def pos_auto_cashier_payload(self):
+        payload = request.session.pop('tara_gym_auto_cashier', None) or {}
+        return {
+            'auto_cashier': bool(payload.get('enabled')),
+            'cashier_employee_id': payload.get('employee_id') or False,
+        }

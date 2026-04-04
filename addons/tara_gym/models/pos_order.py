@@ -1,8 +1,72 @@
-from odoo import models, fields, api, _
+import logging
+
+from odoo import models, fields
+
+
+_logger = logging.getLogger(__name__)
 
 
 class PosOrder(models.Model):
     _inherit = 'pos.order'
+
+    def _auto_pay_subscription_invoice_from_pos(self, sub, order):
+        """Post and pay newly created subscription invoice using POS payment journal."""
+        invoice = sub.invoice_ids.filtered(lambda m: m.state == 'draft')[:1]
+        if not invoice:
+            return
+
+        invoice.action_post()
+
+        if invoice.amount_residual <= 0:
+            return
+
+        payment_journal = False
+        if order.payment_ids:
+            payment_journal = order.payment_ids[0].payment_method_id.journal_id
+        if not payment_journal and getattr(order, 'session_id', False):
+            payment_journal = order.session_id.config_id.journal_id
+        if not payment_journal:
+            _logger.warning(
+                "Cannot auto-pay invoice %s for subscription %s: no payment journal found from POS order %s.",
+                invoice.name, sub.name, order.name
+            )
+            return
+
+        register_ctx = {
+            'active_model': 'account.move',
+            'active_ids': invoice.ids,
+        }
+        register_vals = {
+            'journal_id': payment_journal.id,
+            'amount': invoice.amount_residual,
+            'payment_date': fields.Date.context_today(self),
+        }
+        register = self.env['account.payment.register'].with_context(register_ctx).create(register_vals)
+        register.action_create_payments()
+
+    def _confirm_and_settle_subscriptions_from_order(self, member, order, purchased_product_ids, class_product_ids):
+        """Confirm relevant draft subscriptions and settle their invoices from POS payment."""
+        draft_subs = member.subscription_ids.filtered(lambda s: s.state == 'draft')
+        if not draft_subs:
+            return
+
+        # Regular membership flow: match subscription by purchased membership product.
+        matching_subs = draft_subs.filtered(
+            lambda s: s.membership_id.product_id.id in purchased_product_ids
+        )
+
+        # Class enrollment paid via POS: confirm only configured class drop-in membership.
+        class_drop_in_id = int(
+            self.env['ir.config_parameter'].sudo().get_param('tara_gym.default_drop_in_membership_id', '0')
+        )
+        purchased_class = any(p in purchased_product_ids for p in class_product_ids)
+        if purchased_class and class_drop_in_id:
+            class_drop_in_subs = draft_subs.filtered(lambda s: s.membership_id.id == class_drop_in_id)
+            matching_subs |= class_drop_in_subs
+
+        for sub in matching_subs:
+            sub.action_confirm()
+            self._auto_pay_subscription_invoice_from_pos(sub, order)
 
     def action_pos_order_paid(self):
         res = super().action_pos_order_paid()
@@ -27,12 +91,13 @@ class PosOrder(models.Model):
             # Get all class products to check if a class was purchased (for drop-in class enrollments)
             class_product_ids = self.env['gym.class'].search([]).mapped('product_id.id')
 
-            # 1. Confirm draft subscriptions ONLY IF the purchased product matches the subscription's membership product
-            # OR if a class product was purchased
-            draft_subs = member.subscription_ids.filtered(lambda s: s.state == 'draft')
-            for sub in draft_subs:
-                if sub.membership_id.product_id.id in purchased_product_ids or any(p in purchased_product_ids for p in class_product_ids):
-                    sub.action_confirm()
+            # 1. Confirm and settle relevant draft subscriptions for this order.
+            self._confirm_and_settle_subscriptions_from_order(
+                member=member,
+                order=order,
+                purchased_product_ids=purchased_product_ids,
+                class_product_ids=class_product_ids,
+            )
 
             # 1.5 Confirm draft class enrollments if a class product was purchased
             if any(p in purchased_product_ids for p in class_product_ids):

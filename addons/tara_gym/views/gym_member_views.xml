@@ -54,6 +54,7 @@
                         <button name="action_checkin" string="Check In" type="object" class="oe_highlight" invisible="is_checked_in"/>
                         <button name="action_checkout" string="Check Out" type="object" class="btn-danger" invisible="not is_checked_in" confirm="Confirm check out?"/>
                         <button name="action_add_membership" string="Add Membership" type="object" class="oe_highlight"/>
+                        <button name="action_open_pos_with_customer" string="Open POS" type="object" class="btn-secondary"/>
                         <field name="membership_status" widget="statusbar" statusbar_visible="active,expired,none"/>
                     </header>
                     <sheet>
