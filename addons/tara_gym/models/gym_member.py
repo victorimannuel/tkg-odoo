@@ -143,10 +143,28 @@ class GymMember(models.Model):
                 "Please update it in Gym -> Configuration -> Settings."
             ))
 
+        pos_session = pos_config.current_session_id
+        if not pos_session or pos_session.state != 'opened':
+            raise UserError(_(
+                "No open POS session found for '%s'. "
+                "Please open a POS session first.",
+                pos_config.name,
+            ))
+
         employee = self.env['hr.employee'].sudo().search(
             [('user_id', '=', self.env.user.id)],
             limit=1
         )
+
+        pos_order = self.env['pos.order'].create({
+            'session_id': pos_session.id,
+            'partner_id': self.partner_id.id,
+            'amount_tax': 0,
+            'amount_total': 0,
+            'amount_paid': 0,
+            'amount_return': 0,
+            'lines': [],
+        })
 
         if request:
             request.session['tara_gym_auto_cashier'] = {
@@ -162,7 +180,7 @@ class GymMember(models.Model):
 
         return {
             'type': 'ir.actions.act_url',
-            'url': '/pos/ui/%d' % pos_config.id,
+            'url': '/pos/ui/%d/product/%s' % (pos_config.id, pos_order.uuid),
             'target': 'self',
         }
 
