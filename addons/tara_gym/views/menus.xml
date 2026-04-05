@@ -23,13 +23,17 @@
         <menuitem id="menu_gym_members"
                   name="Members"
                   parent="menu_gym_root"
+                  sequence="10"/>
+        <menuitem id="menu_gym_members_all"
+                  name="All Members"
+                  parent="menu_gym_members"
                   action="action_gym_member"
                   sequence="10"/>
-        <menuitem id="menu_gym_drop_in"
+        <menuitem id="menu_gym_quick_add_membership"
                   name="Quick Add Membership"
                   parent="menu_gym_members"
                   action="action_gym_quick_add_membership_wizard"
-                  sequence="10"/>
+                  sequence="20"/>
                   
         <menuitem id="menu_gym_visitor"
                   name="Visitors"
