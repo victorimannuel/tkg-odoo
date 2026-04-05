@@ -10,10 +10,13 @@
                         <div class="text-muted" colspan="2">
                             Figures below are calculated from gym visit, membership subscription, and POS records for the selected date.
                         </div>
-                        <field name="report_date"/>
                     </group>
-                    <separator/>
                     <group>
+                        <group>
+                            <field name="report_date"/>
+                        </group>
+                    </group>
+                    <group string="Count">
                         <group>
                             <field name="staff_count"/>
                             <field name="checkin_count"/>
