@@ -6,6 +6,33 @@
             <field name="path">gym-membership-subscriptions</field>
             <field name="res_model">gym.membership.subscription</field>
             <field name="view_mode">list,form,pivot,graph</field>
+            <field name="search_view_id" ref="view_gym_membership_subscription_search"/>
+        </record>
+
+        <record id="view_gym_membership_subscription_search" model="ir.ui.view">
+            <field name="name">gym.membership.subscription.search</field>
+            <field name="model">gym.membership.subscription</field>
+            <field name="arch" type="xml">
+                <search string="Search Subscriptions">
+                    <field name="name"/>
+                    <field name="member_id" string="Member"/>
+                    <field name="membership_id"/>
+                    <field name="membership_category_id"/>
+
+                    <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Running" name="filter_running" domain="[('state', '=', 'running')]"/>
+                    <filter string="Frozen" name="filter_frozen" domain="[('state', '=', 'frozen')]"/>
+                    <filter string="Expired" name="filter_expired" domain="[('state', '=', 'expired')]"/>
+                    <filter string="Canceled" name="filter_canceled" domain="[('state', '=', 'canceled')]"/>
+
+                    <separator/>
+
+                    <filter string="Start Date" name="group_start_date" context="{'group_by': 'date_start'}"/>
+                    <filter string="Member" name="group_member" context="{'group_by': 'member_id'}"/>
+                    <filter string="Membership" name="group_membership" context="{'group_by': 'membership_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                </search>
+            </field>
         </record>
 
         <record id="view_gym_membership_subscription_list" model="ir.ui.view">
