@@ -112,7 +112,14 @@
                   name="Reporting"
                   parent="menu_gym_root"
                   sequence="90"
-                  groups="group_gym_manager"/>
+                  groups="group_gym_manager,group_gym_front_desk"/>
+
+        <menuitem id="menu_gym_closing_report"
+                  name="Closing Report"
+                  parent="menu_gym_reporting"
+                  action="action_gym_closing_report_wizard"
+                  sequence="1"
+                  groups="group_gym_manager,group_gym_front_desk"/>
 
         <!-- Reporting Submenus -->
         <menuitem id="menu_gym_report_subscription"

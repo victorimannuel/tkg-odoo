@@ -67,10 +67,12 @@
         'wizard/gym_schedule_create_wizard_views.xml',
         'wizard/gym_quick_add_membership_wizard_views.xml',
         'wizard/gym_drop_in_wizard_views.xml',
+        'wizard/gym_closing_report_wizard_views.xml',
         'views/menus.xml',
 
         # Reports
         'reports/gym_member_reports.xml',
+        'reports/gym_closing_report.xml',
     ],
     'demo': [
         'demo/gym_demo.xml',

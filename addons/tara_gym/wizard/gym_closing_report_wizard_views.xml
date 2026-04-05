@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gym_closing_report_wizard_form" model="ir.ui.view">
+        <field name="name">gym.closing.report.wizard.form</field>
+        <field name="model">gym.closing.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Gym Closing Report">
+                <sheet>
+                    <group>
+                        <div class="text-muted" colspan="2">
+                            Figures below are calculated from gym visit, membership subscription, and POS records for the selected date.
+                        </div>
+                        <field name="report_date"/>
+                    </group>
+                    <separator/>
+                    <group>
+                        <group>
+                            <field name="staff_count"/>
+                            <field name="checkin_count"/>
+                        </group>
+                        <group>
+                            <field name="open_gym_count"/>
+                            <field name="new_member_count"/>
+                            <field name="renew_member_count"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Traffic by Time Slot">
+                            <field name="slot_0600_0800"/>
+                            <field name="slot_0800_1000"/>
+                            <field name="slot_1000_1200"/>
+                            <field name="slot_1200_1400"/>
+                            <field name="slot_1400_1600"/>
+                            <field name="slot_1600_1800"/>
+                            <field name="slot_1800_2000"/>
+                        </group>
+                        <group string="Memberships / Passes">
+                            <field name="memberships_total"/>
+                            <field name="memberships_lines" nolabel="1" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="F&amp;B">
+                            <field name="fnb_total"/>
+                            <field name="fnb_lines" nolabel="1" readonly="1"/>
+                        </group>
+                        <group string="Products">
+                            <field name="products_total"/>
+                            <field name="products_lines" nolabel="1" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Total">
+                        <field name="total_revenue" readonly="1"/>
+                    </group>
+
+                    <group string="Month to Date">
+                        <group>
+                            <field name="mtd_membership_total"/>
+                            <field name="mtd_fnb_total"/>
+                            <field name="mtd_product_total"/>
+                        </group>
+                        <group>
+                            <field name="grand_total" readonly="1"/>
+                            <field name="daily_average" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+                <footer>
+                    <button string="Print PDF" type="object" name="action_print_report" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gym_closing_report_wizard" model="ir.actions.act_window">
+        <field name="name">Closing Report</field>
+        <field name="res_model">gym.closing.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_gym_closing_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
