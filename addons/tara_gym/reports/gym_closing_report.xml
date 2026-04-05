@@ -17,17 +17,17 @@
                         <div class="page">
                             <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #182028; font-size: 12px;">
                                 <div style="border-top: 6px solid #1f5f4a; padding-top: 18px; margin-bottom: 20px;">
-                                    <table style="width: 100%; border-collapse: collapse;">
+                                    <table style="width: 100%; border-collapse: separate;">
                                         <tbody>
                                             <tr>
-                                                <td style="vertical-align: top;">
+                                                <td style="vertical-align: top; border: none;">
                                                     <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.6px; color: #6d7885;">Gym Reporting</div>
                                                     <div style="font-size: 30px; font-weight: 700; line-height: 1.1; color: #0f1720; margin-top: 3px;">Closing Report</div>
                                                     <div style="font-size: 13px; color: #55606d; margin-top: 7px;">
                                                         <span t-esc="doc.report_date_label"/>
                                                     </div>
                                                 </td>
-                                                <td style="width: 230px; vertical-align: top; text-align: right;">
+                                                <td style="width: 230px; vertical-align: top; text-align: right; border: none;">
                                                     <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: #6d7885;">Total Revenue</div>
                                                     <div style="font-size: 28px; font-weight: 700; color: #1f5f4a; margin-top: 2px;" t-esc="doc.format_idr(doc.total_revenue)"/>
                                                 </td>
@@ -36,30 +36,30 @@
                                     </table>
                                 </div>
 
-                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                <table style="width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px;">
                                     <tbody>
                                         <tr>
-                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 12px 14px;">
+                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 14px 16px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #7b8794;">Staff / Team</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.staff_count"/>
                                             </td>
-                                            <td style="width: 1%;"/>
-                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 12px 14px;">
+                                            <td style="width: 1%; border: none;"/>
+                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 14px 16px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #7b8794;">Check-ins</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.checkin_count"/>
                                             </td>
-                                            <td style="width: 1%;"/>
-                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 12px 14px;">
+                                            <td style="width: 1%; border: none;"/>
+                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 14px 16px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #7b8794;">Open Gym</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.open_gym_count"/>
                                             </td>
-                                            <td style="width: 1%;"/>
-                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 12px 14px;">
+                                            <td style="width: 1%; border: none;"/>
+                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 14px 16px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #7b8794;">New</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.new_member_count"/>
                                             </td>
-                                            <td style="width: 1%;"/>
-                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 12px 14px;">
+                                            <td style="width: 1%; border: none;"/>
+                                            <td style="width: 19%; border: 1px solid #d9e1e7; padding: 14px 16px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #7b8794;">Renew</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.renew_member_count"/>
                                             </td>
@@ -67,63 +67,63 @@
                                     </tbody>
                                 </table>
 
-                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                <table style="width: 100%; border-collapse: separate; margin-bottom: 20px;">
                                     <tbody>
                                         <tr>
-                                            <td style="width: 43%; vertical-align: top; padding-right: 10px;">
+                                            <td style="width: 43%; vertical-align: top; padding-right: 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Traffic by Time Slot</div>
-                                                <table style="width: 100%; border-collapse: collapse;">
+                                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">06.00 - 08.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_0600_0800"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">06.00 - 08.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_0600_0800"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">08.00 - 10.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_0800_1000"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">08.00 - 10.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_0800_1000"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">10.00 - 12.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1000_1200"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">10.00 - 12.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1000_1200"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">12.00 - 14.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1200_1400"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">12.00 - 14.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1200_1400"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">14.00 - 16.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1400_1600"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">14.00 - 16.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1400_1600"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; color: #55606d;">16.00 - 18.00</td>
-                                                            <td style="padding: 8px 0; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1600_1800"/>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;">16.00 - 18.00</td>
+                                                            <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.slot_1600_1800"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 8px 0; color: #55606d;">18.00 - 20.00</td>
-                                                            <td style="padding: 8px 0; text-align: right; font-weight: 700;" t-esc="doc.slot_1800_2000"/>
+                                                            <td style="padding: 9px 12px; color: #55606d;">18.00 - 20.00</td>
+                                                            <td style="padding: 9px 12px; text-align: right; font-weight: 700;" t-esc="doc.slot_1800_2000"/>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td style="width: 57%; vertical-align: top; padding-left: 10px;">
+                                            <td style="width: 57%; vertical-align: top; padding-left: 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Revenue Summary</div>
                                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody>
                                                         <tr>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">Memberships / Passes</td>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.memberships_total)"/>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Memberships / Passes</td>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.memberships_total)"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">F&amp;B</td>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.fnb_total)"/>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">F&amp;B</td>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.fnb_total)"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">Products</td>
-                                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.products_total)"/>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Products</td>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.products_total)"/>
                                                         </tr>
                                                         <tr>
-                                                            <td style="padding: 13px 14px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Total Revenue</td>
-                                                            <td style="padding: 13px 14px; background: #f4f7f5; text-align: right; font-size: 17px; font-weight: 700; color: #1f5f4a;" t-esc="doc.format_idr(doc.total_revenue)"/>
+                                                            <td style="padding: 13px 16px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Total Revenue</td>
+                                                            <td style="padding: 13px 16px; background: #f4f7f5; text-align: right; font-size: 17px; font-weight: 700; color: #1f5f4a;" t-esc="doc.format_idr(doc.total_revenue)"/>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -132,59 +132,59 @@
                                     </tbody>
                                 </table>
 
-                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 22px;">
+                                <table style="width: 100%; border-collapse: separate; margin-bottom: 22px;">
                                     <tbody>
                                         <tr>
-                                            <td style="width: 33.33%; vertical-align: top; padding-right: 10px;">
+                                            <td style="width: 33.33%; vertical-align: top; padding-right: 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Memberships / Passes</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.memberships_total)"/>
-                                                <table style="width: 100%; border-collapse: collapse;">
+                                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody t-if="doc.memberships_lines">
                                                         <t t-foreach="doc.detail_lines(doc.memberships_lines)" t-as="line">
                                                             <tr>
-                                                                <td style="padding: 7px 0; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
+                                                                <td style="padding: 8px 10px; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
                                                             </tr>
                                                         </t>
                                                     </tbody>
                                                     <tbody t-if="not doc.memberships_lines">
                                                         <tr>
-                                                            <td style="padding: 7px 0; color: #98a2ad;">No membership sales recorded.</td>
+                                                            <td style="padding: 8px 10px; color: #98a2ad;">No membership sales recorded.</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td style="width: 33.33%; vertical-align: top; padding: 0 10px;">
+                                            <td style="width: 33.33%; vertical-align: top; padding: 0 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">F&amp;B</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.fnb_total)"/>
-                                                <table style="width: 100%; border-collapse: collapse;">
+                                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody t-if="doc.fnb_lines">
                                                         <t t-foreach="doc.detail_lines(doc.fnb_lines)" t-as="line">
                                                             <tr>
-                                                                <td style="padding: 7px 0; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
+                                                                <td style="padding: 8px 10px; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
                                                             </tr>
                                                         </t>
                                                     </tbody>
                                                     <tbody t-if="not doc.fnb_lines">
                                                         <tr>
-                                                            <td style="padding: 7px 0; color: #98a2ad;">No F&amp;B sales recorded.</td>
+                                                            <td style="padding: 8px 10px; color: #98a2ad;">No F&amp;B sales recorded.</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td style="width: 33.33%; vertical-align: top; padding-left: 10px;">
+                                            <td style="width: 33.33%; vertical-align: top; padding-left: 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Products</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.products_total)"/>
-                                                <table style="width: 100%; border-collapse: collapse;">
+                                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody t-if="doc.products_lines">
                                                         <t t-foreach="doc.detail_lines(doc.products_lines)" t-as="line">
                                                             <tr>
-                                                                <td style="padding: 7px 0; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
+                                                                <td style="padding: 8px 10px; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
                                                             </tr>
                                                         </t>
                                                     </tbody>
                                                     <tbody t-if="not doc.products_lines">
                                                         <tr>
-                                                            <td style="padding: 7px 0; color: #98a2ad;">No product sales recorded.</td>
+                                                            <td style="padding: 8px 10px; color: #98a2ad;">No product sales recorded.</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -197,35 +197,35 @@
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7; margin-bottom: 14px;">
                                     <tbody>
                                         <tr>
-                                            <td colspan="2" style="padding: 10px 14px; background: #f7f9fb; border-bottom: 1px solid #e8edf1; color: #55606d;" t-esc="doc.mtd_period_label"/>
+                                            <td colspan="2" style="padding: 10px 16px; background: #f7f9fb; border-bottom: 1px solid #e8edf1; color: #55606d;" t-esc="doc.mtd_period_label"/>
                                         </tr>
                                         <tr>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">Membership</td>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_membership_total)"/>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Membership</td>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_membership_total)"/>
                                         </tr>
                                         <tr>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">F&amp;B</td>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_fnb_total)"/>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">F&amp;B</td>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_fnb_total)"/>
                                         </tr>
                                         <tr>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; color: #55606d;">Product</td>
-                                            <td style="padding: 11px 14px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_product_total)"/>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Product</td>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_product_total)"/>
                                         </tr>
                                         <tr>
-                                            <td style="padding: 13px 14px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Grand Total</td>
-                                            <td style="padding: 13px 14px; background: #f4f7f5; text-align: right; font-size: 17px; font-weight: 700; color: #1f5f4a;" t-esc="doc.format_idr(doc.grand_total)"/>
+                                            <td style="padding: 13px 16px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Grand Total</td>
+                                            <td style="padding: 13px 16px; background: #f4f7f5; text-align: right; font-size: 17px; font-weight: 700; color: #1f5f4a;" t-esc="doc.format_idr(doc.grand_total)"/>
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <table style="width: 100%; border-collapse: collapse; margin-top: 18px;">
+                                <table style="width: 100%; border-collapse: collapse; margin-top: 18px; border: none;">
                                     <tbody>
                                         <tr>
-                                            <td style="padding: 12px 14px; background: #1f5f4a; color: #ffffff; width: 220px;">
+                                            <td style="padding: 14px 16px; background: #1f5f4a; color: #ffffff; width: 220px;">
                                                 <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.8;">Daily Average</div>
                                                 <div style="font-size: 22px; font-weight: 700; margin-top: 4px;" t-esc="doc.format_idr(doc.daily_average)"/>
                                             </td>
-                                            <td style="padding: 12px 14px; border: 1px solid #d9e1e7; color: #55606d;">
+                                            <td style="padding: 14px 16px; border: 1px solid #d9e1e7; color: #55606d;">
                                                 Month-to-date performance through
                                                 <strong style="color: #0f1720;" t-esc="doc.report_date and doc.report_date.strftime('%d %B %Y') or ''"/>
                                             </td>
