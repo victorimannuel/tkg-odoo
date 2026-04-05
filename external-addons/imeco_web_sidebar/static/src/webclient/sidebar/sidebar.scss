@@ -5,16 +5,18 @@
     overflow-y: auto;
     overflow-x: visible;
     position: relative;
-    // z-index: 1200;
+    z-index: 40;
     .sidebar {
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow: visible;
 	    white-space: nowrap;
 	    .sidebar_menu {
 	    	padding: 0;
             list-style: none;
+            overflow: visible;
             > li {
                 position: relative;
             }
@@ -36,6 +38,9 @@
 	        > li.active > a {
 			    background: $sidebar-active;
 	        }
+            > li.is-open > a {
+                background: $sidebar-active;
+            }
 	        > li:hover > a {
 			    background: $sidebar-active;
 	        }
@@ -65,84 +70,53 @@
 	}
 }
 
-.sidebar_flyout {
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout {
     position: absolute;
     top: 0;
-    left: var(--sidebar-width, 0);
-    height: 100%;
-    min-width: 220px;
-    background-color: $sidebar-active;
-    padding: 8px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 1300;
-    .sidebar_submenu {
-        display: block;
-        list-style: none;
-        margin: 0;
-        padding: 0 8px;
-        li > a {
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 400;
-            overflow: hidden;
-            padding: 6px 12px;
-            text-decoration: none;
-            color: $sidebar-text;
-            text-overflow: ellipsis;
-        }
-        li.active > a {
-            background: $sidebar-active;
-        }
-        li:hover > a {
-            background: $sidebar-active;
-        }
-    }
-}
-
-.sidebar_apps_submenu_popup {
-    position: fixed;
-    min-width: 220px;
+    left: calc(100% - 1px);
+    min-width: 260px;
+    max-width: 380px;
     max-height: 80vh;
     overflow-y: auto;
-    background-color: $sidebar-background;
+    background: $sidebar-background;
+    border: 1px solid rgba($sidebar-text, 0.1);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
     color: $sidebar-text;
     padding: 8px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    z-index: 5000;
+    z-index: 5001;
 }
 
-.sidebar_apps_submenu_popup_list {
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout > .sidebar_submenu {
+    display: block;
     list-style: none;
     margin: 0;
     padding: 0 8px;
 }
 
-.sidebar_apps_submenu_popup_item {
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout .sidebar_submenu .sidebar_submenu {
+    display: block;
+    padding-left: 16px;
+}
+
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout .sidebar_submenu li > a {
+    cursor: pointer;
     font-size: 15px;
     font-weight: 400;
-    padding: 4px 8px;
-    white-space: nowrap;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: $sidebar-text;
+    white-space: normal;
+    line-height: 1.35;
+    border-left: 2px solid transparent;
 }
 
-.sidebar_apps_submenu_popup_item--actionable {
-    cursor: pointer;
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout .sidebar_submenu li.active > a {
+    background: $sidebar-active;
+    border-left-color: rgba($sidebar-text, 0.9);
 }
 
-.sidebar_apps_submenu_popup_item--actionable:hover {
-    background-color: $sidebar-active;
-}
-
-.sidebar_apps_submenu_popup_item--section {
-    font-weight: 600;
-    color: rgba($sidebar-text, 0.7);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding-top: 10px;
-    padding-bottom: 6px;
-    margin-top: 4px;
-    border-top: 1px solid rgba($sidebar-text, 0.08);
+.sidebar_panel .sidebar .sidebar_menu > li > .sidebar_flyout .sidebar_submenu li:hover > a {
+    background: $sidebar-active;
 }
 
 .sidebar_type_large {

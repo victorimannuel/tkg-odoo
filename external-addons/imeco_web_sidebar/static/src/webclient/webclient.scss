@@ -1,5 +1,6 @@
 .o_web_client {
 	display: grid !important;
+    overflow: visible !important;
     grid-template-areas:
         "banner banner"
         "navbar navbar"
@@ -15,9 +16,14 @@
     }
     > .sidebar_panel {
     	grid-area: sidebar;
+        position: relative;
+        z-index: 40;
+        overflow: visible !important;
     }
     > .o_action_manager {
     	grid-area: content;
+        position: relative;
+        z-index: 1;
     }
     > .o-main-components-container {
     	grid-area: components;

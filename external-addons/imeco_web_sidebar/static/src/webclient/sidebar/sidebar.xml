@@ -49,16 +49,14 @@
 	</t>
     <t t-name="imeco_web_sidebar.SideBar.RootSection">
         <li
-            t-attf-class="nav-item {{ this._isSectionActive(section) ? 'active' : '' }} {{ section.childrenTree.length ? 'has-children' : '' }}"
-            t-on-mouseenter="(ev) => this._onRootSectionEnter(section, ev.currentTarget)"
-            t-on-mouseleave="() => this._onRootSectionLeave()"
+            t-attf-class="nav-item {{ this._isSectionActive(section) ? 'active' : '' }} {{ section.childrenTree.length ? 'has-children' : '' }} {{ this.state.openSectionId === section.id ? 'is-open' : '' }}"
         >
             <a
                 t-att-href="section.href"
                 t-att-data-menu-id="section.id"
                 t-att-data-menu-xmlid="section.xmlid"
                 t-att-data-action-id="section.actionID"
-                t-on-click.prevent="() => this._onSectionClick(section)"
+                t-on-click.prevent="() => this._onRootSectionClick(section)"
                 class="nav-link"
                 role="menuitem"
             >
@@ -66,7 +64,7 @@
                     <t t-out="section.name" />
                 </span>
             </a>
-            <t t-if="section.childrenTree.length">
+            <t t-if="section.childrenTree.length and this.state.openSectionId === section.id">
                 <div class="sidebar_flyout">
                     <ul class="sidebar_submenu">
                         <t t-foreach="section.childrenTree" t-as="child" t-key="child.id">
@@ -82,8 +80,6 @@
 	<t t-name="imeco_web_sidebar.SideBar.Section">
         <li
             t-attf-class="nav-item {{ this._isSectionActive(section) ? 'active' : '' }} {{ section.childrenTree.length ? 'has-children' : '' }}"
-            t-on-mouseenter="(ev) => this._onRootSectionEnter(section, ev.currentTarget)"
-            t-on-mouseleave="() => this._onRootSectionLeave()"
         >
             <a
                 t-att-href="section.href"
