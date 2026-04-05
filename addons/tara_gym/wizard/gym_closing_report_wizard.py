@@ -113,7 +113,7 @@ class GymClosingReportWizard(models.TransientModel):
             qty = quantities[name]
             if abs(qty) < 1e-9:
                 continue
-            lines.append(f"{name}= {self._format_quantity(qty)}")
+            lines.append(f"{name} = {self._format_quantity(qty)}")
         return "\n".join(lines)
 
     def _classify_non_gym_product(self, product):
