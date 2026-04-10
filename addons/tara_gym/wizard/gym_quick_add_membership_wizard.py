@@ -80,8 +80,8 @@ class GymQuickAddMembershipWizard(models.TransientModel):
 
         if not self.firstname:
             raise UserError(_("First name is required for new members."))
-        if not self.phone:
-            raise UserError(_("Phone is required for new members."))
+        # if not self.phone:
+        #     raise UserError(_("Phone is required for new members."))
         if not self.gender:
             raise UserError(_("Gender is required for new members."))
 
