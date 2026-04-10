@@ -15,5 +15,6 @@ env/
 
 # OS/editor noise
 .DS_Store
+.codex
 .idea/
 .vscode/
