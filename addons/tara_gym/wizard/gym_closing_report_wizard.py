@@ -76,6 +76,12 @@ class GymClosingReportWizard(models.TransientModel):
         string='Products Breakdown',
         compute='_compute_report_data',
     )
+    complimentary_product_count = fields.Float(string='Complimentary Products', compute='_compute_report_data')
+    complimentary_total_value = fields.Float(string='Complimentary Total Value', compute='_compute_report_data')
+    complimentary_lines = fields.Text(
+        string='Complimentary Breakdown',
+        compute='_compute_report_data',
+    )
 
     mtd_membership_total = fields.Float(string='Month to Date Membership', compute='_compute_report_data')
     mtd_fnb_total = fields.Float(string='Month to Date F&B', compute='_compute_report_data')
@@ -167,18 +173,29 @@ class GymClosingReportWizard(models.TransientModel):
 
         fnb_quantities = defaultdict(float)
         product_quantities = defaultdict(float)
+        complimentary_quantities = defaultdict(float)
         fnb_total = 0.0
         product_total = 0.0
+        complimentary_lines = lines.filtered('is_complimentary')
+        complimentary_total_value = sum(complimentary_lines.mapped('complimentary_value'))
+        complimentary_product_count = sum(abs(qty) for qty in complimentary_lines.mapped('qty'))
 
         for line in lines:
             product = line.product_id
-            if not product or product.id in gym_product_ids:
+            if not product:
+                continue
+
+            name = product.display_name or product.name or 'Unnamed Product'
+            if line.is_complimentary:
+                complimentary_quantities[name] += line.qty
+                continue
+
+            if product.id in gym_product_ids:
                 continue
 
             section = self._classify_non_gym_product(product)
             line_total = line.price_subtotal_incl
             qty = line.qty
-            name = product.display_name or product.name or 'Unnamed Product'
 
             if section == 'fnb':
                 fnb_quantities[name] += qty
@@ -193,6 +210,9 @@ class GymClosingReportWizard(models.TransientModel):
             'fnb_total': fnb_total,
             'products_lines': self._dict_to_lines(product_quantities),
             'products_total': product_total,
+            'complimentary_product_count': complimentary_product_count,
+            'complimentary_total_value': complimentary_total_value,
+            'complimentary_lines': self._dict_to_lines(complimentary_quantities),
         }
 
     def _collect_visit_data(self, start_dt, end_dt):
@@ -257,6 +277,9 @@ class GymClosingReportWizard(models.TransientModel):
                 wizard.fnb_lines = False
                 wizard.products_total = 0.0
                 wizard.products_lines = False
+                wizard.complimentary_product_count = 0
+                wizard.complimentary_total_value = 0.0
+                wizard.complimentary_lines = False
                 wizard.mtd_membership_total = 0.0
                 wizard.mtd_fnb_total = 0.0
                 wizard.mtd_product_total = 0.0
@@ -300,6 +323,9 @@ class GymClosingReportWizard(models.TransientModel):
             wizard.fnb_lines = daily_pos['fnb_lines']
             wizard.products_total = daily_pos['products_total']
             wizard.products_lines = daily_pos['products_lines']
+            wizard.complimentary_product_count = daily_pos['complimentary_product_count']
+            wizard.complimentary_total_value = daily_pos['complimentary_total_value']
+            wizard.complimentary_lines = daily_pos['complimentary_lines']
 
             wizard.mtd_membership_total = mtd_membership['total']
             wizard.mtd_fnb_total = mtd_pos['fnb_total']

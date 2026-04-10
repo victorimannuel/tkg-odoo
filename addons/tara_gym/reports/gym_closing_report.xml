@@ -193,6 +193,36 @@
                                     </tbody>
                                 </table>
 
+                                <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #d97706; padding-bottom: 6px; margin-bottom: 10px;">Complimentary</div>
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #f1d6a8; margin-bottom: 20px;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 10px 16px; border-bottom: 1px solid #f7e7cb; color: #7c5b18;">Products</td>
+                                            <td style="padding: 10px 16px; border-bottom: 1px solid #f7e7cb; text-align: right; font-weight: 700;" t-esc="doc.complimentary_product_count"/>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 10px 16px; border-bottom: 1px solid #f7e7cb; color: #7c5b18;">Value</td>
+                                            <td style="padding: 10px 16px; border-bottom: 1px solid #f7e7cb; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.complimentary_total_value)"/>
+                                        </tr>
+                                        <tr t-if="doc.complimentary_lines">
+                                            <td colspan="2" style="padding: 0;">
+                                                <table style="width: 100%; border-collapse: collapse;">
+                                                    <tbody>
+                                                        <t t-foreach="doc.detail_lines(doc.complimentary_lines)" t-as="line">
+                                                            <tr>
+                                                                <td style="padding: 8px 16px; border-top: 1px solid #fdf4e5;" t-esc="line"/>
+                                                            </tr>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="not doc.complimentary_lines">
+                                            <td colspan="2" style="padding: 8px 16px; color: #98a2ad;">No complimentary orders recorded.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Month to Date</div>
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7; margin-bottom: 14px;">
                                     <tbody>

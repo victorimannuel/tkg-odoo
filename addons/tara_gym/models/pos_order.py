@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 _logger = logging.getLogger(__name__)
@@ -118,3 +118,27 @@ class PosOrder(models.Model):
                     })
                     
         return res
+
+
+class PosOrderLine(models.Model):
+    _inherit = 'pos.order.line'
+
+    is_complimentary = fields.Boolean(
+        string='Complimentary',
+        default=False,
+        help='True when this line is complimentary.',
+    )
+    complimentary_value = fields.Monetary(
+        string='Complimentary Value',
+        currency_field='currency_id',
+        default=0.0,
+        help='Captured pre-discount value when the line is marked complimentary.',
+    )
+
+    @api.model
+    def _load_pos_data_fields(self, config):
+        fields_list = super()._load_pos_data_fields(config)
+        for field_name in ('is_complimentary', 'complimentary_value'):
+            if field_name not in fields_list:
+                fields_list.append(field_name)
+        return fields_list

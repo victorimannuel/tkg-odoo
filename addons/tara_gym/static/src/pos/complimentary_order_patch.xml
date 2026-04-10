@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="tara_gym.ComplimentaryLineButton">
+        <button t-attf-class="{{props.class}}"
+                t-on-click="props.onClick"
+                t-att-disabled="props.disabled"
+                t-att-class="{'text-bg-warning': props.active}">
+            <i class="fa fa-fw fa-gift me-1"/>
+            <span t-esc="props.label"/>
+        </button>
+    </t>
+
+    <t t-name="tara_gym.ControlButtonsComplimentary" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[InternalNoteButton]" position="after">
+            <div t-if="!props.showRemainingButtons">
+                <ComplimentaryLineButton class="buttonClass"
+                                         onClick.bind="toggleComplimentaryOrderline"
+                                         label="this.complimentaryButtonLabel()"
+                                         active="this.isSelectedLineComplimentary()"
+                                         disabled="!this.canToggleComplimentary()"/>
+            </div>
+        </xpath>
+        <xpath expr="//NoteButton" position="after">
+            <ComplimentaryLineButton class="buttonClass"
+                                     onClick.bind="toggleComplimentaryOrderline"
+                                     label="this.complimentaryButtonLabel()"
+                                     active="this.isSelectedLineComplimentary()"
+                                     disabled="!this.canToggleComplimentary()"/>
+        </xpath>
+    </t>
+</templates>

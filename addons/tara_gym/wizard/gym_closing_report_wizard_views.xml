@@ -54,6 +54,15 @@
                             <field name="products_lines" nolabel="1" readonly="1"/>
                         </group>
                     </group>
+                    <group string="Complimentary">
+                        <group>
+                            <field name="complimentary_product_count" readonly="1"/>
+                            <field name="complimentary_total_value" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="complimentary_lines" nolabel="1" readonly="1"/>
+                        </group>
+                    </group>
 
                     <group string="Total">
                         <field name="total_revenue" readonly="1"/>

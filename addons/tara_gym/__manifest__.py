@@ -95,6 +95,9 @@
         ],
         'point_of_sale._assets_pos': [
             'tara_gym/static/src/pos/auto_cashier_login_patch.js',
+            'tara_gym/static/src/pos/complimentary_order_patch.js',
+            'tara_gym/static/src/pos/complimentary_order_patch.xml',
+            'tara_gym/static/src/pos/complimentary_receipt_patch.xml',
             'tara_gym/static/src/pos/navbar_patch.js',
             'tara_gym/static/src/pos/navbar_patch.xml',
         ],
