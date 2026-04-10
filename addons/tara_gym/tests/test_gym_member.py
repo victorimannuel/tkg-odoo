@@ -59,3 +59,19 @@ class TestGymMember(common.TransactionCase):
         # Invoice creation (mocking or checking if method exists)
         # subscription.action_generate_invoice() 
         # We might need account module installed and configured for this to fully work without mocking
+
+    def test_quick_add_membership_defaults_member(self):
+        """Wizard should prefill the selected member."""
+        member = self.Member.create({
+            'firstname': 'Alex',
+            'surname': 'Taylor',
+            'email': 'alex.taylor@example.com',
+            'phone': '123456789',
+            'gender': 'other',
+        })
+
+        wizard = self.env['gym.quick.add.membership.wizard'].with_context(
+            default_member_id=member.id
+        ).create({})
+
+        self.assertEqual(wizard.member_id, member)

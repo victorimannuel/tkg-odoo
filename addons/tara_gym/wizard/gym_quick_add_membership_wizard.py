@@ -34,6 +34,12 @@ class GymQuickAddMembershipWizard(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
+        member_id = self.env.context.get('default_member_id')
+        member = self.env['gym.member'].browse(member_id).exists() if member_id else False
+        if member:
+            if 'member_id' in fields_list:
+                res['member_id'] = member.id
+        
         if self.env.context.get('from_drop_in_menu'):
             drop_in_visit_membership_id = int(
                 self.env['ir.config_parameter'].sudo().get_param(
