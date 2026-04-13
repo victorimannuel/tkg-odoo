@@ -18,8 +18,8 @@
                     <field name="subscription_id"/>
                     <field name="door_id"/>
                     <field name="session_id"/>
-                    <field name="checkin_time"/>
-                    <field name="checkout_time"/>
+                    <field name="checkin_time" options="{'rounding': 1}"/>
+                    <field name="checkout_time" options="{'rounding': 1}"/>
                     <field name="status"/>
                 </list>
             </field>
@@ -40,8 +40,8 @@
                                 <field name="method"/>
                             </group>
                             <group>
-                                <field name="checkin_time"/>
-                                <field name="checkout_time"/>
+                                <field name="checkin_time" options="{'rounding': 1}"/>
+                                <field name="checkout_time" options="{'rounding': 1}"/>
                                 <field name="status"/>
                             </group>
                         </group>
