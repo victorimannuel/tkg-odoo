@@ -102,7 +102,9 @@ class GymMembershipSubscription(models.Model):
                     'months': relativedelta(months=sub.membership_id.duration),
                     'years': relativedelta(years=sub.membership_id.duration),
                 }
-                sub.date_end = sub.date_start + delta.get(sub.membership_id.duration_uom)
+                # Duration is inclusive: 1 day means start=end on the same date.
+                computed_end = sub.date_start + delta.get(sub.membership_id.duration_uom, relativedelta())
+                sub.date_end = computed_end - relativedelta(days=1)
             # elif sub.membership_id.basis == 'punch':
             #     sub.date_end = False
 
