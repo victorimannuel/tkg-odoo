@@ -3,8 +3,10 @@ from odoo import models, fields, api, _
 class GymMembership(models.Model):
     _name = 'gym.membership'
     _description = 'Membership'
+    _order = 'sequence, id'
 
     name = fields.Char(required=True)
+    sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
     product_id = fields.Many2one('product.product', string='Linked Product', domain=[('type', '=', 'service')], ondelete='restrict')
     category_id = fields.Many2one(
