@@ -74,7 +74,7 @@
                                     <t t-else="">
                                         <img t-if="record.gender.raw_value == 'male'" alt="Trainer" t-att-src="'/tara_gym/static/src/img/man_gym_placeholder.jpg'" class="w-100 h-100 object-fit-cover"/>
                                         <img t-elif="record.gender.raw_value == 'female'" alt="Trainer" t-att-src="'/tara_gym/static/src/img/woman_gym_placeholder.jpg'" class="w-100 h-100 object-fit-cover"/>
-                                        <img t-else="" alt="Trainer" t-att-src="'/tara_gym/static/src/img/other_gym_placeholder.svg'" class="w-100 h-100 object-fit-contain"/>
+                                        <img t-else="" alt="Trainer" t-att-src="'/tara_gym/static/src/img/other_gym_placeholder.png'" class="w-100 h-100 object-fit-contain"/>
                                     </t>
                                 </div>
                             </aside>
