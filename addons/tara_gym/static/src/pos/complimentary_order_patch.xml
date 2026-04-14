@@ -11,7 +11,7 @@
     </t>
 
     <t t-name="tara_gym.ControlButtonsComplimentary" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
-        <xpath expr="//t[InternalNoteButton]" position="after">
+        <!-- <xpath expr="//t[InternalNoteButton]" position="after">
             <div t-if="!props.showRemainingButtons">
                 <ComplimentaryLineButton class="buttonClass"
                                          onClick.bind="toggleComplimentaryOrderline"
@@ -19,7 +19,7 @@
                                          active="this.isSelectedLineComplimentary()"
                                          disabled="!this.canToggleComplimentary()"/>
             </div>
-        </xpath>
+        </xpath> -->
         <xpath expr="//NoteButton" position="after">
             <ComplimentaryLineButton class="buttonClass"
                                      onClick.bind="toggleComplimentaryOrderline"
