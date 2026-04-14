@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_cart_sale_order.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[@t-on-click='() => this.onClickQuotation()']" position="after">
+            <button t-if="props.showRemainingButtons and this.pos.cashier._role != 'minimal'"
+                    t-att-disabled="!this.canCreateSaleOrderFromCart()"
+                    t-attf-class="{{ buttonClass }}"
+                    t-on-click="() => this.onClickCreateSaleOrderFromCart()">
+                <i class="fa fa-file-text-o me-1" role="img" aria-label="Create Sale Order" title="Create Sale Order"/>
+                Create SO
+            </button>
+        </xpath>
+    </t>
+</templates>
