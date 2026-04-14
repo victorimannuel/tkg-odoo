@@ -80,6 +80,12 @@
                   action="action_gym_trainer"
                   sequence="50"/>
 
+        <menuitem id="menu_gym_sales"
+                  name="Sales"
+                  parent="menu_gym_root"
+                  action="sale.action_quotations"
+                  sequence="55"/>
+
         <menuitem id="menu_gym_pos"
                   name="Point of Sale"
                   parent="menu_gym_root"

@@ -20,7 +20,7 @@
         Designed for Odoo 19.
     """,
     'author': 'Victor',
-    'depends': ['base', 'account', 'mail', 'portal', 'web', 'point_of_sale', 'stock'],
+    'depends': ['base', 'account', 'mail', 'portal', 'web', 'point_of_sale', 'stock', 'sale_management'],
     'data': [
         # Security
         'security/gym_security.xml',
