@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+        <field name="context">{
+            'default_project_id': active_id,
+            'show_project_update': True,
+            'search_default_open_tasks': 0,
+        }</field>
+    </record>
+</odoo>
