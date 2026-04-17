@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mt_task_pending" model="mail.message.subtype">
+        <field name="name">Task Pending</field>
+        <field name="res_model">project.task</field>
+        <field name="default" eval="False"/>
+        <field name="sequence" eval="107"/>
+        <field name="description">Task pending</field>
+    </record>
+
+    <record id="mt_project_task_pending" model="mail.message.subtype">
+        <field name="name">Task Pending</field>
+        <field name="sequence">26</field>
+        <field name="res_model">project.project</field>
+        <field name="default" eval="False"/>
+        <field name="parent_id" ref="project_task_state.mt_task_pending"/>
+        <field name="relation_field">project_id</field>
+    </record>
+</odoo>

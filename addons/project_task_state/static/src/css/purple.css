@@ -1,0 +1,18 @@
+/* CSS override to force explicit purple */
+.text-purple {
+    color: #875A7B !important;
+}
+
+.btn-outline-purple {
+    color: #875A7B !important;
+    border-color: #875A7B !important;
+}
+.btn-outline-purple:hover {
+    color: #fff !important;
+    background-color: #875A7B !important;
+    border-color: #875A7B !important;
+}
+
+.bg-purple {
+    background-color: #875A7B !important;
+}
