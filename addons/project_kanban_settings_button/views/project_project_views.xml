@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_view_kanban_add_settings_button" model="ir.ui.view">
+        <field name="name">project.project.kanban.add.settings.button</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer//div[contains(@class, 'o_project_kanban_boxes')]" position="after">
+                <a groups="project.group_project_manager"
+                   t-if="!record.is_template.raw_value"
+                   class="btn btn-primary ms-2"
+                   type="open">
+                    Settings
+                </a>
+            </xpath>
+        </field>
+    </record>
+</odoo>
