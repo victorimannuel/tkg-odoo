@@ -132,6 +132,42 @@
                                     </tbody>
                                 </table>
 
+                                
+                                <!-- Classes Section -->
+                                <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #2563eb; padding-bottom: 6px; margin-bottom: 10px;">Classes</div>
+                                <t t-set="class_lines" t-value="doc.get_class_lines()"/>
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7; margin-bottom: 20px;">
+                                    <thead>
+                                        <tr style="background: #f7f9fb;">
+                                            <th style="padding: 9px 12px; border-bottom: 2px solid #d9e1e7; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7b8794;">Class</th>
+                                            <th style="padding: 9px 12px; border-bottom: 2px solid #d9e1e7; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7b8794;">Time</th>
+                                            <th style="padding: 9px 12px; border-bottom: 2px solid #d9e1e7; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7b8794;">Trainer</th>
+                                            <th style="padding: 9px 12px; border-bottom: 2px solid #d9e1e7; text-align: right; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7b8794;">Attendees</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody t-if="class_lines">
+                                        <t t-foreach="class_lines" t-as="cl">
+                                            <tr>
+                                                <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; font-weight: 600;" t-esc="cl['name']"/>
+                                                <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;" t-esc="cl['time']"/>
+                                                <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; color: #55606d;" t-esc="cl['trainer']"/>
+                                                <td style="padding: 9px 12px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;">
+                                                    <t t-esc="cl['attendees']"/> / <span style="color: #98a2ad;" t-esc="cl['capacity']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr style="background: #f4f7f9;">
+                                            <td colspan="3" style="padding: 10px 12px; font-weight: 700; color: #0f1720;">Total</td>
+                                            <td style="padding: 10px 12px; text-align: right; font-weight: 700; color: #2563eb;" t-esc="doc.class_total_attendees"/>
+                                        </tr>
+                                    </tbody>
+                                    <tbody t-if="not class_lines">
+                                        <tr>
+                                            <td colspan="4" style="padding: 9px 12px; color: #98a2ad;">No classes scheduled for this day.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                                 <table style="width: 100%; border-collapse: separate; margin-bottom: 22px;">
                                     <tbody>
                                         <tr>
@@ -193,6 +229,7 @@
                                     </tbody>
                                 </table>
 
+                                <!-- Complimentary Section -->
                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #d97706; padding-bottom: 6px; margin-bottom: 10px;">Complimentary</div>
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #f1d6a8; margin-bottom: 20px;">
                                     <tbody>
@@ -223,6 +260,7 @@
                                     </tbody>
                                 </table>
 
+                                <!-- Month to Date Section -->
                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Month to Date</div>
                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7; margin-bottom: 14px;">
                                     <tbody>

@@ -44,6 +44,12 @@
                         </group>
                     </group>
 
+                    <group string="Classes">
+                        <group>
+                            <field name="class_count" readonly="1"/>
+                            <field name="class_total_attendees" readonly="1"/>
+                        </group>
+                    </group>
                     <group>
                         <group string="F&amp;B">
                             <field name="fnb_total"/>

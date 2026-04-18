@@ -5,6 +5,7 @@ from datetime import datetime, time, timedelta
 import pytz
 
 from odoo import api, fields, models
+from odoo.tools import format_datetime
 
 
 class GymClosingReportWizard(models.TransientModel):
@@ -86,6 +87,9 @@ class GymClosingReportWizard(models.TransientModel):
     mtd_membership_total = fields.Float(string='Month to Date Membership', compute='_compute_report_data')
     mtd_fnb_total = fields.Float(string='Month to Date F&B', compute='_compute_report_data')
     mtd_product_total = fields.Float(string='Month to Date Product', compute='_compute_report_data')
+
+    class_count = fields.Integer(string='Classes', compute='_compute_report_data')
+    class_total_attendees = fields.Integer(string='Class Attendees', compute='_compute_report_data')
 
     total_revenue = fields.Float(string='Total Revenue', compute='_compute_report_data')
     grand_total = fields.Float(string='Grand Total', compute='_compute_report_data')
@@ -255,6 +259,40 @@ class GymClosingReportWizard(models.TransientModel):
         })
         return slot_counts
 
+    def _collect_class_data(self, start_dt, end_dt):
+        sessions = self.env['gym.class.session'].sudo().search([
+            ('start_datetime', '>=', start_dt),
+            ('start_datetime', '<', end_dt),
+            ('state', '!=', 'canceled'),
+        ], order='start_datetime asc')
+
+        class_lines = []
+        total_attendees = 0
+        for session in sessions:
+            attended = session.enrollment_ids.filtered(
+                lambda e: e.state == 'attended'
+            )
+            attendee_count = len(attended)
+            total_attendees += attendee_count
+
+            tz = self._get_user_timezone()
+            local_start = pytz.UTC.localize(session.start_datetime).astimezone(tz)
+            local_end = pytz.UTC.localize(session.end_datetime).astimezone(tz)
+
+            class_lines.append({
+                'name': session.class_id.name or session.name,
+                'time': f"{local_start.strftime('%H:%M')} - {local_end.strftime('%H:%M')}",
+                'trainer': session.trainer_id.name or '-',
+                'attendees': attendee_count,
+                'capacity': session.capacity or session.class_id.capacity or 0,
+            })
+
+        return {
+            'class_lines': class_lines,
+            'class_count': len(sessions),
+            'total_attendees': total_attendees,
+        }
+
     @api.depends('report_date')
     def _compute_report_data(self):
         for wizard in self:
@@ -280,6 +318,8 @@ class GymClosingReportWizard(models.TransientModel):
                 wizard.complimentary_product_count = 0
                 wizard.complimentary_total_value = 0.0
                 wizard.complimentary_lines = False
+                wizard.class_count = 0
+                wizard.class_total_attendees = 0
                 wizard.mtd_membership_total = 0.0
                 wizard.mtd_fnb_total = 0.0
                 wizard.mtd_product_total = 0.0
@@ -296,6 +336,7 @@ class GymClosingReportWizard(models.TransientModel):
             daily_membership = wizard._collect_membership_data(day_start, day_end)
             daily_pos = wizard._collect_pos_data(day_start, day_end)
             daily_visit = wizard._collect_visit_data(day_start, day_end)
+            daily_class = wizard._collect_class_data(day_start, day_end)
 
             mtd_membership = wizard._collect_membership_data(month_start_dt, day_end)
             mtd_pos = wizard._collect_pos_data(month_start_dt, day_end)
@@ -326,6 +367,9 @@ class GymClosingReportWizard(models.TransientModel):
             wizard.complimentary_product_count = daily_pos['complimentary_product_count']
             wizard.complimentary_total_value = daily_pos['complimentary_total_value']
             wizard.complimentary_lines = daily_pos['complimentary_lines']
+
+            wizard.class_count = daily_class['class_count']
+            wizard.class_total_attendees = daily_class['total_attendees']
 
             wizard.mtd_membership_total = mtd_membership['total']
             wizard.mtd_fnb_total = mtd_pos['fnb_total']
@@ -370,6 +414,14 @@ class GymClosingReportWizard(models.TransientModel):
     def detail_lines(self, text):
         self.ensure_one()
         return [line.strip() for line in (text or '').splitlines() if line.strip()]
+
+    def get_class_lines(self):
+        self.ensure_one()
+        if not self.report_date:
+            return []
+        report_date = fields.Date.to_date(self.report_date)
+        day_start, day_end = self._get_utc_range_for_local_date(report_date)
+        return self._collect_class_data(day_start, day_end)['class_lines']
 
     def action_print_report(self):
         self.ensure_one()
