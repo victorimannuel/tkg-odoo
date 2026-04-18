@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_imeco_pos_order_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">imeco.pos.order.cancel.wizard.form</field>
+        <field name="model">imeco.pos.order.cancel.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cancel POS Order">
+                <sheet>
+                    <group string="Order Details">
+                        <field name="order_id" readonly="1"/>
+                        <field name="order_ref" readonly="1"/>
+                        <field name="amount_total" readonly="1" widget="monetary"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="session_state" readonly="1"/>
+                    </group>
+                    <group string="Cancellation">
+                        <field name="cancel_reason" required="1" nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_cancel" string="Confirm Cancellation" type="object" class="btn-danger"/>
+                    <button string="Back" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pos_order_form_inherit_cancel_clean" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.cancel.clean</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='refund']" position="after">
+                <button
+                    name="action_open_cancel_wizard_clean"
+                    string="Cancel Order"
+                    type="object"
+                    class="btn-danger"
+                    groups="point_of_sale.group_pos_manager"
+                    invisible="state not in ('paid', 'done') or session_id.state == 'closed'"
+                />
+            </xpath>
+            <xpath expr="//field[@name='state'][@widget='statusbar'][last()]" position="after">
+                <div class="alert alert-danger" role="alert" invisible="state != 'cancel' or not cancel_reason_clean">
+                    <strong>Cancelled Reason:</strong>
+                    <field name="cancel_reason_clean" readonly="1" nolabel="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
