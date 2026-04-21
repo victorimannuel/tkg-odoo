@@ -150,6 +150,13 @@
                   sequence="1"
                   groups="group_gym_manager,group_gym_front_desk"/>
 
+        <menuitem id="menu_gym_payment_details_report"
+                  name="Payment Details Report"
+                  parent="menu_gym_reporting"
+                  action="action_gym_payment_details_report_wizard"
+                  sequence="2"
+                  groups="group_gym_manager,group_gym_front_desk"/>
+
         <!-- Reporting Submenus -->
         <menuitem id="menu_gym_report_subscription"
                   name="Subscription Analysis"

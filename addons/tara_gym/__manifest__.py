@@ -68,6 +68,7 @@
         'wizard/gym_quick_add_membership_wizard_views.xml',
         'wizard/gym_drop_in_wizard_views.xml',
         'wizard/gym_closing_report_wizard_views.xml',
+        'wizard/gym_payment_details_report_wizard_views.xml',
         'views/menus.xml',
 
         # Reports

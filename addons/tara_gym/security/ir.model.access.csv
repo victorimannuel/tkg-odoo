@@ -87,3 +87,5 @@ access_gym_quick_add_membership_wizard_manager,gym.quick.add.membership.wizard.m
 access_gym_quick_add_membership_wizard_front_desk,gym.quick.add.membership.wizard.front_desk,model_gym_quick_add_membership_wizard,group_gym_front_desk,1,1,1,1
 access_gym_closing_report_wizard_manager,gym.closing.report.wizard.manager,model_gym_closing_report_wizard,group_gym_manager,1,1,1,1
 access_gym_closing_report_wizard_front_desk,gym.closing.report.wizard.front_desk,model_gym_closing_report_wizard,group_gym_front_desk,1,1,1,1
+access_gym_payment_details_report_wizard_manager,gym.payment.details.report.wizard.manager,model_gym_payment_details_report_wizard,group_gym_manager,1,1,1,1
+access_gym_payment_details_report_wizard_front_desk,gym.payment.details.report.wizard.front_desk,model_gym_payment_details_report_wizard,group_gym_front_desk,1,1,1,1
