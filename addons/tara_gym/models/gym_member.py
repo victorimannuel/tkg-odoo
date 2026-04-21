@@ -2,6 +2,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.http import request
 
+
 class GymMember(models.Model):
     _name = 'gym.member'
     _description = 'Gym Member'
@@ -49,8 +50,17 @@ class GymMember(models.Model):
     # notes = fields.Text(string='Notes')
     # medical_info = fields.Text(string='Medical Information')
 
+    def _capitalize_name(self, value):
+        if not value:
+            return value
+        return " ".join(part.capitalize() for part in value.split())
+
     @api.onchange('firstname', 'surname')
     def _onchange_complete_name(self):
+        if self.firstname:
+            self.firstname = self._capitalize_name(self.firstname)
+        if self.surname:
+            self.surname = self._capitalize_name(self.surname)
         names = [n for n in [self.firstname, self.surname] if n]
         self.name = " ".join(names)
 
@@ -244,6 +254,11 @@ class GymMember(models.Model):
         if not gym_tag:
             gym_tag = Tag.create({'name': 'GYM'})
         for vals in vals_list:
+            if vals.get('firstname'):
+                vals['firstname'] = self._capitalize_name(vals['firstname'])
+            if vals.get('surname'):
+                vals['surname'] = self._capitalize_name(vals['surname'])
+
             if vals.get('member_code', 'New') == 'New':
                 vals['member_code'] = self.env['ir.sequence'].next_by_code('gym.member') or 'New'
             
@@ -257,6 +272,14 @@ class GymMember(models.Model):
                 vals['tag_ids'] = [(6, 0, [gym_tag.id])]
 
         return super().create(vals_list)
+
+    def write(self, vals):
+        vals = dict(vals)
+        if vals.get('firstname'):
+            vals['firstname'] = self._capitalize_name(vals['firstname'])
+        if vals.get('surname'):
+            vals['surname'] = self._capitalize_name(vals['surname'])
+        return super().write(vals)
 
     @api.depends('subscription_ids.state', 'subscription_ids.date_end')
     def _compute_membership_status(self):
