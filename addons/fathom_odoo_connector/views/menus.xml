@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_fathom_connector_root" name="Fathom Connector" parent="base.menu_administration" sequence="80" groups="base.group_system"/>
+    <menuitem id="menu_fathom_sync_log" name="Sync Logs" parent="menu_fathom_connector_root" action="action_fathom_sync_log" sequence="10" groups="base.group_system"/>
+    <menuitem id="menu_fathom_external_map" name="External Mappings" parent="menu_fathom_connector_root" action="action_fathom_external_map" sequence="20" groups="base.group_system"/>
+</odoo>

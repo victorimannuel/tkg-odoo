@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_fathom_connector" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.fathom.connector</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Fathom Connector" name="fathom_connector" groups="base.group_system">
+                    <block title="Settings" name="fathom_connector_settings_block">
+                        <setting string="Enable Synchronization" help="Enable scheduled synchronization jobs.">
+                            <field name="fathom_sync_enabled"/>
+                        </setting>
+                        <setting string="API Base URL" help="Base URL for Fathom API endpoints.">
+                            <field name="fathom_api_base_url" placeholder="https://api.fathomhq.com/v1"/>
+                        </setting>
+                        <setting string="API Key" help="Bearer token used for API authentication.">
+                            <field name="fathom_api_key" password="True"/>
+                        </setting>
+                        <setting string="Last Sync" help="Updated automatically after successful sync runs.">
+                            <field name="fathom_last_sync_at" readonly="1"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

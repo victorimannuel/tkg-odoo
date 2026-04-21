@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fathom_sync_log_user,fathom.sync.log user,model_fathom_sync_log,base.group_system,1,0,0,0
+access_fathom_sync_log_manager,fathom.sync.log manager,model_fathom_sync_log,base.group_erp_manager,1,1,1,1
+access_fathom_external_map_user,fathom.external.map user,model_fathom_external_map,base.group_system,1,0,0,0
+access_fathom_external_map_manager,fathom.external.map manager,model_fathom_external_map,base.group_erp_manager,1,1,1,1
