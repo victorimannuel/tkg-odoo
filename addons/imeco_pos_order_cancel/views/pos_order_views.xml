@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_imeco_pos_order_cancel_wizard_form" model="ir.ui.view">
-        <field name="name">imeco.pos.order.cancel.wizard.form</field>
-        <field name="model">imeco.pos.order.cancel.wizard</field>
+    <record id="view_pos_order_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">pos.order.cancel.wizard.form</field>
+        <field name="model">pos.order.cancel.wizard</field>
         <field name="arch" type="xml">
             <form string="Cancel POS Order">
                 <sheet>

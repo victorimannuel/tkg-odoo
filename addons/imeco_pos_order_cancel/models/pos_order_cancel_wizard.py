@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -42,7 +42,7 @@ class PosOrderCancelWizard(models.TransientModel):
         if not self.cancel_reason or not self.cancel_reason.strip():
             raise UserError(_('A cancellation reason is required.'))
 
-        self.order_id.action_force_cancel_from_ui(
+        self.order_id.action_force_cancel_backend_clean(
             self.order_id.id,
             self.cancel_reason.strip(),
         )

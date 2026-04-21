@@ -18,7 +18,7 @@ class PosOrder(models.Model):
         return {
             'name': _('Cancel POS Order'),
             'type': 'ir.actions.act_window',
-            'res_model': 'imeco.pos.order.cancel.wizard',
+            'res_model': 'pos.order.cancel.wizard',
             'view_mode': 'form',
             'target': 'new',
             'context': {'default_order_id': self.id},
