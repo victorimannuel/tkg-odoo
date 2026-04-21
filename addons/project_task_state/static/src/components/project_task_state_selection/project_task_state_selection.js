@@ -10,6 +10,9 @@ patch(ProjectTaskStateSelection.prototype, {
         this.icons["05_pending"] = "fa fa-lg fa-clock-o";
         this.colorIcons["05_pending"] = "text-warning";
         this.colorButton["05_pending"] = "btn-outline-warning";
+        this.icons["06_waiting_validation"] = "fa fa-lg fa-hourglass-half";
+        this.colorIcons["06_waiting_validation"] = "text-orange";
+        this.colorButton["06_waiting_validation"] = "btn-outline-orange";
         
         // Modify In Progress color to blue (info)
         this.icons["01_in_progress"] = "o_status bg-info";
@@ -26,11 +29,14 @@ patch(ProjectTaskStateSelection.prototype, {
         const states = ["1_canceled", "1_done"];
         const currentState = this.props.record.data[this.props.name];
         if (currentState != "04_waiting_normal") {
-            states.unshift("01_in_progress", "02_changes_requested", "05_pending", "03_approved");
+            states.unshift("01_in_progress", "02_changes_requested", "05_pending", "06_waiting_validation", "03_approved");
         }
         return states.map((state) => {
             if (state === "05_pending" && !labels.has(state)) {
                 return [state, _t("Pending")];
+            }
+            if (state === "06_waiting_validation" && !labels.has(state)) {
+                return [state, _t("Waiting Validation")];
             }
             return [state, labels.get(state) || state];
         });

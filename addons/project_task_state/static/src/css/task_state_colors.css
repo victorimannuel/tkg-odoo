@@ -16,3 +16,21 @@
 .bg-purple {
     background-color: #875A7B !important;
 }
+
+.text-orange {
+    color: #f97316 !important;
+}
+
+.btn-outline-orange {
+    color: #f97316 !important;
+    border-color: #f97316 !important;
+}
+.btn-outline-orange:hover {
+    color: #fff !important;
+    background-color: #f97316 !important;
+    border-color: #f97316 !important;
+}
+
+.bg-orange {
+    background-color: #f97316 !important;
+}

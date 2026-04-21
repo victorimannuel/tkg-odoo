@@ -11,7 +11,7 @@
     'assets': {
         'web.assets_backend': [
             'project_task_state/static/src/components/project_task_state_selection/project_task_state_selection.js',
-            'project_task_state/static/src/css/purple.css',
+            'project_task_state/static/src/css/task_state_colors.css',
         ],
     },
     'installable': True,

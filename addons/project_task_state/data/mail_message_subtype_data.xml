@@ -16,4 +16,21 @@
         <field name="parent_id" ref="project_task_state.mt_task_pending"/>
         <field name="relation_field">project_id</field>
     </record>
+
+    <record id="mt_task_waiting_validation" model="mail.message.subtype">
+        <field name="name">Task Waiting Validation</field>
+        <field name="res_model">project.task</field>
+        <field name="default" eval="False"/>
+        <field name="sequence" eval="108"/>
+        <field name="description">Task waiting validation</field>
+    </record>
+
+    <record id="mt_project_task_waiting_validation" model="mail.message.subtype">
+        <field name="name">Task Waiting Validation</field>
+        <field name="sequence">27</field>
+        <field name="res_model">project.project</field>
+        <field name="default" eval="False"/>
+        <field name="parent_id" ref="project_task_state.mt_task_waiting_validation"/>
+        <field name="relation_field">project_id</field>
+    </record>
 </odoo>
