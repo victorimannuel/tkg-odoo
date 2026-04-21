@@ -1,6 +1,8 @@
 import base64
+from datetime import datetime, time, timedelta
 from io import BytesIO
 
+import pytz
 import xlsxwriter
 
 from odoo import fields, models
@@ -18,6 +20,21 @@ class GymPaymentDetailsReportWizard(models.TransientModel):
     file_data = fields.Binary(string='File', readonly=True)
     file_name = fields.Char(string='Filename', readonly=True)
 
+    def _get_payment_domain_for_report_date(self):
+        payment_date_field = self.env['pos.payment']._fields.get('payment_date')
+        if payment_date_field and payment_date_field.type == 'datetime':
+            tz_name = self.env.context.get('tz') or self.env.user.tz or 'UTC'
+            timezone = pytz.timezone(tz_name)
+            local_start = timezone.localize(datetime.combine(self.report_date, time.min))
+            local_end = local_start + timedelta(days=1)
+            utc_start = local_start.astimezone(pytz.UTC).replace(tzinfo=None)
+            utc_end = local_end.astimezone(pytz.UTC).replace(tzinfo=None)
+            return [
+                ('payment_date', '>=', fields.Datetime.to_string(utc_start)),
+                ('payment_date', '<', fields.Datetime.to_string(utc_end)),
+            ]
+        return [('payment_date', '=', self.report_date)]
+
     def _get_sales_details(self, order):
         details = []
         for line in order.lines:
@@ -28,12 +45,7 @@ class GymPaymentDetailsReportWizard(models.TransientModel):
     def action_export_xlsx(self):
         self.ensure_one()
 
-        payments = self.env['pos.payment'].sudo().search(
-            [
-                ('payment_date', '=', self.report_date),
-            ],
-            order='payment_date, id',
-        )
+        payments = self.env['pos.payment'].sudo().search(self._get_payment_domain_for_report_date(), order='payment_date, id')
 
         partner_ids = payments.mapped('pos_order_id.partner_id').ids
         members = self.env['gym.member'].sudo().search([('partner_id', 'in', partner_ids)])
@@ -74,7 +86,12 @@ class GymPaymentDetailsReportWizard(models.TransientModel):
 
             payment_date = payment.payment_date
             if payment_date:
-                payment_date = fields.Date.to_string(payment_date)
+                payment_date_field = payment._fields.get('payment_date')
+                if payment_date_field and payment_date_field.type == 'datetime':
+                    local_payment_dt = fields.Datetime.context_timestamp(payment, payment_date)
+                    payment_date = fields.Date.to_string(local_payment_dt.date())
+                else:
+                    payment_date = fields.Date.to_string(payment_date)
             else:
                 payment_date = ''
 
