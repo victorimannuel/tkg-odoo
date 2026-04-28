@@ -148,14 +148,25 @@ class FathomMeetingSummary(models.Model):
         if isinstance(payload, dict):
             speaker = item_speaker = payload.get('speaker') or payload.get('speaker_name')
             if isinstance(item_speaker, dict):
-                speaker = item_speaker.get('name') or item_speaker.get('email')
+                speaker = (
+                    item_speaker.get('display_name')
+                    or item_speaker.get('name')
+                    or item_speaker.get('email')
+                    or item_speaker.get('matched_calendar_invitee_email')
+                )
             text = payload.get('text') or payload.get('content') or payload.get('utterance')
-            start = payload.get('start') or payload.get('start_time') or payload.get('offset')
+            raw_timestamp = payload.get('timestamp')
+            start = payload.get('start')
+            if start is None:
+                start = payload.get('start_time')
+            if start is None:
+                start = payload.get('offset')
             if text:
+                timestamp = str(raw_timestamp).strip() if raw_timestamp else self._format_transcript_timestamp(start)
                 lines.append({
                     'speaker': str(speaker or 'Unknown'),
                     'text': str(text),
-                    'timestamp': self._format_transcript_timestamp(start),
+                    'timestamp': timestamp,
                 })
                 return lines
             for key in ('segments', 'items', 'data', 'transcript'):
