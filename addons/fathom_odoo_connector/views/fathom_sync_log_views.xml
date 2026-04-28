@@ -6,6 +6,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="create_date"/>
+                <field name="account_id"/>
+                <field name="user_id"/>
                 <field name="sync_type"/>
                 <field name="status"/>
                 <field name="response_status"/>
@@ -26,6 +28,8 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="account_id"/>
+                            <field name="user_id"/>
                             <field name="sync_type"/>
                             <field name="status"/>
                             <field name="response_status"/>
@@ -41,6 +45,7 @@
                     <group>
                         <field name="request_path"/>
                         <field name="request_payload" widget="text"/>
+                        <field name="match_debug" widget="text"/>
                         <field name="response_body" widget="text"/>
                         <field name="error_message" widget="text"/>
                     </group>

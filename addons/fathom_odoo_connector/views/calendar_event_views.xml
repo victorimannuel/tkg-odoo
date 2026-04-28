@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_calendar_event_form_inherit_fathom" model="ir.ui.view">
+        <field name="name">calendar.event.form.inherit.fathom</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Fathom" name="fathom_page">
+                    <group col="2">
+                        <field name="fathom_meeting_summary_id" readonly="1"/>
+                        <field name="fathom_account_id" readonly="1"/>
+                        <field name="fathom_recording_id" readonly="1"/>
+                        <field name="fathom_meeting_url" readonly="1" widget="url"/>
+                        <field name="fathom_share_url" readonly="1" widget="url"/>
+                        <field name="fathom_synced_at" readonly="1"/>
+                    </group>
+
+                    <group string="Action Items">
+                        <field name="fathom_action_items_html" nolabel="1" widget="html" readonly="1" colspan="2"/>
+                    </group>
+
+                    <group string="Summary">
+                        <field name="fathom_summary_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

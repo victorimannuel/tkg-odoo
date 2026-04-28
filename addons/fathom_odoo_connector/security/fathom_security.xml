@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_fathom_account_own" model="ir.rule">
+        <field name="name">Fathom accounts: own</field>
+        <field name="model_id" ref="model_fathom_account"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_fathom_sync_log_own" model="ir.rule">
+        <field name="name">Fathom sync logs: own</field>
+        <field name="model_id" ref="model_fathom_sync_log"/>
+        <field name="domain_force">['|', ('user_id', '=', user.id), ('account_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

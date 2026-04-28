@@ -20,5 +20,15 @@
             <field name="interval_type">minutes</field>
             <field name="active" eval="False"/>
         </record>
+
+        <record id="ir_cron_fathom_sync_meeting_summaries" model="ir.cron">
+            <field name="name">Fathom: Sync Meeting Summaries</field>
+            <field name="model_id" ref="model_fathom_sync"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_meeting_summaries()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="False"/>
+        </record>
     </data>
 </odoo>

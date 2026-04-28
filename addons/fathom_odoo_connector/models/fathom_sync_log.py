@@ -7,10 +7,13 @@ class FathomSyncLog(models.Model):
     _order = 'create_date desc, id desc'
 
     name = fields.Char(required=True, default='Fathom Sync')
+    account_id = fields.Many2one('fathom.account', index=True, ondelete='set null')
+    user_id = fields.Many2one('res.users', index=True, ondelete='set null')
     sync_type = fields.Selection(
         selection=[
             ('master_data', 'Master Data'),
             ('transactions', 'Transactions'),
+            ('meetings', 'Meeting Summaries'),
             ('manual', 'Manual'),
         ],
         required=True,
@@ -31,6 +34,7 @@ class FathomSyncLog(models.Model):
     response_status = fields.Integer()
     response_body = fields.Text()
     error_message = fields.Text()
+    match_debug = fields.Text()
     created_count = fields.Integer(default=0)
     updated_count = fields.Integer(default=0)
     skipped_count = fields.Integer(default=0)

@@ -13,18 +13,24 @@ _logger = logging.getLogger(__name__)
 
 
 class FathomApiClient:
-    def __init__(self, env):
+    def __init__(self, env, account=None):
         self.env = env
-        config = env['ir.config_parameter'].sudo()
-        self.base_url = config.get_param('fathom_odoo_connector.api_base_url') or 'https://api.fathomhq.com/v1'
-        self.api_key = config.get_param('fathom_odoo_connector.api_key')
+        self.account = account
+        if account:
+            account_sudo = account.sudo()
+            self.base_url = (account_sudo.api_base_url or 'https://api.fathomhq.com/v1').strip()
+            self.api_key = account_sudo.api_key
+        else:
+            config = env['ir.config_parameter'].sudo()
+            self.base_url = config.get_param('fathom_odoo_connector.api_base_url') or 'https://api.fathomhq.com/v1'
+            self.api_key = config.get_param('fathom_odoo_connector.api_key')
         self.timeout = 30
 
     def _headers(self):
         if not self.api_key:
             raise UserError('Fathom API key is not configured.')
         return {
-            'Authorization': f'Bearer {self.api_key}',
+            'X-Api-Key': self.api_key,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
@@ -58,7 +64,10 @@ class FathomApiClient:
             response.raise_for_status()
             if not response.text:
                 return {}, response.status_code
-            return response.json(), response.status_code
+            try:
+                return response.json(), response.status_code
+            except ValueError:
+                return response.text, response.status_code
         except requests.RequestException as exc:
             _logger.exception('Fathom API request failed: %s %s', method, path)
             raise UserError(f'Fathom API request failed: {exc}') from exc
