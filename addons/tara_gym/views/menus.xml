@@ -62,6 +62,12 @@
                   action="action_gym_class_session"
                   sequence="30"
                   groups="base.group_no_one"/>
+        <menuitem id="menu_gym_class_enrollment"
+                  name="Class Enrollments"
+                  parent="menu_gym_class_session_schedule"
+                  action="action_gym_class_enrollment"
+                  sequence="40"
+                  groups="base.group_no_one"/>
 
 
         <!-- <menuitem id="menu_gym_billing"
