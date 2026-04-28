@@ -29,6 +29,7 @@ class FathomMeetingSummary(models.Model):
     action_items_html = fields.Html(compute='_compute_action_items_html', sanitize=True)
 
     transcript_json = fields.Text()
+    transcript_html = fields.Html(compute='_compute_transcript_html', sanitize=True)
     synced_at = fields.Datetime(readonly=True, index=True)
 
     _sql_constraints = [
@@ -120,6 +121,73 @@ class FathomMeetingSummary(models.Model):
     def _compute_action_items_html(self):
         for rec in self:
             rec.action_items_html = rec._action_items_json_to_html(rec.action_items_json)
+
+    def _compute_transcript_html(self):
+        for rec in self:
+            rec.transcript_html = rec._transcript_json_to_html(rec.transcript_json)
+
+    def _format_transcript_timestamp(self, seconds_value):
+        try:
+            total_seconds = int(float(seconds_value or 0))
+        except Exception:  # pylint: disable=broad-exception-caught
+            return ''
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+        if hours:
+            return f'{hours}:{minutes:02d}:{seconds:02d}'
+        return f'{minutes:02d}:{seconds:02d}'
+
+    def _extract_transcript_lines(self, payload):
+        lines = []
+        if isinstance(payload, list):
+            for item in payload:
+                lines.extend(self._extract_transcript_lines(item))
+            return lines
+
+        if isinstance(payload, dict):
+            speaker = item_speaker = payload.get('speaker') or payload.get('speaker_name')
+            if isinstance(item_speaker, dict):
+                speaker = item_speaker.get('name') or item_speaker.get('email')
+            text = payload.get('text') or payload.get('content') or payload.get('utterance')
+            start = payload.get('start') or payload.get('start_time') or payload.get('offset')
+            if text:
+                lines.append({
+                    'speaker': str(speaker or 'Unknown'),
+                    'text': str(text),
+                    'timestamp': self._format_transcript_timestamp(start),
+                })
+                return lines
+            for key in ('segments', 'items', 'data', 'transcript'):
+                value = payload.get(key)
+                if value:
+                    lines.extend(self._extract_transcript_lines(value))
+            return lines
+
+        if isinstance(payload, str) and payload.strip():
+            lines.append({'speaker': 'Transcript', 'text': payload.strip(), 'timestamp': ''})
+        return lines
+
+    def _transcript_json_to_html(self, transcript_json):
+        if not transcript_json:
+            return '<p>No transcript.</p>'
+        try:
+            payload = json.loads(transcript_json)
+        except Exception:  # pylint: disable=broad-exception-caught
+            return f'<pre>{escape(transcript_json)}</pre>'
+
+        lines = self._extract_transcript_lines(payload)
+        if not lines:
+            return '<p>No transcript.</p>'
+
+        rows = []
+        for line in lines:
+            speaker = escape(line.get('speaker') or 'Unknown')
+            text = escape(line.get('text') or '')
+            timestamp = escape(line.get('timestamp') or '')
+            time_html = f'<small>[{timestamp}]</small> ' if timestamp else ''
+            rows.append(f'<p>{time_html}<strong>{speaker}:</strong> {text}</p>')
+        return ''.join(rows)
 
     def _action_items_json_to_html(self, action_items_json):
         if not action_items_json:
