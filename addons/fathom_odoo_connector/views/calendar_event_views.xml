@@ -7,13 +7,17 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Fathom" name="fathom_page">
-                    <group col="2">
-                        <field name="fathom_meeting_summary_id" readonly="1"/>
-                        <field name="fathom_account_id" readonly="1"/>
-                        <field name="fathom_recording_id" readonly="1"/>
-                        <field name="fathom_meeting_url" readonly="1" widget="url"/>
-                        <field name="fathom_share_url" readonly="1" widget="url"/>
-                        <field name="fathom_synced_at" readonly="1"/>
+                    <group>
+                        <group>
+                            <field name="fathom_meeting_summary_id" readonly="1"/>
+                            <field name="fathom_account_id" readonly="1"/>
+                            <field name="fathom_synced_at" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="fathom_recording_id" readonly="1"/>
+                            <field name="fathom_meeting_url" readonly="1" widget="url"/>
+                            <field name="fathom_share_url" readonly="1" widget="url"/>
+                        </group>
                     </group>
 
                     <group string="Action Items">
