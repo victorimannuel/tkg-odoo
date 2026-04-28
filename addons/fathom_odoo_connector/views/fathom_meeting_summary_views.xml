@@ -44,27 +44,29 @@
                         </group>
                     </group>
 
-                    <page string="Readable" name="readable_page">
-                        <group string="Action Items">
-                            <field name="action_items_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
-                        </group>
-                        <group string="Summary">
-                            <field name="summary_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
-                        </group>
-                        <group string="Transcript">
-                            <field name="transcript_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
-                        </group>
-                    </page>
+                    <notebook>
+                        <page string="Readable" name="readable_page">
+                            <group string="Action Items">
+                                <field name="action_items_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
+                            </group>
+                            <group string="Summary">
+                                <field name="summary_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
+                            </group>
+                            <group string="Transcript">
+                                <field name="transcript_html" nolabel="1" readonly="1" widget="html" colspan="2"/>
+                            </group>
+                        </page>
 
-                    <page string="Raw" name="raw_page">
-                        <group string="Raw Markdown">
-                            <field name="summary_markdown" nolabel="1" readonly="1" widget="text" colspan="2"/>
-                        </group>
-                        <group string="Transcript (Raw JSON)">
-                            <field name="transcript_json" nolabel="1" readonly="1" widget="text" colspan="2"/>
-                        </group>
-                    </page>
-                    
+                        <page string="Raw" name="raw_page">
+                            <group string="Raw Markdown">
+                                <field name="summary_markdown" nolabel="1" readonly="1" widget="text" colspan="2"/>
+                            </group>
+                            <group string="Transcript (Raw JSON)">
+                                <field name="transcript_json" nolabel="1" readonly="1" widget="text" colspan="2"/>
+                            </group>
+                        </page>
+                    </notebook>
+
                 </sheet>
             </form>
         </field>
