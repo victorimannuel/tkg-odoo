@@ -17,8 +17,25 @@ class GymTrainer(models.Model):
         ('other', 'Other')
     ], string='Gender')
 
+    def _capitalize_name(self, value):
+        if not value:
+            return value
+        return " ".join(part.capitalize() for part in value.split())
+
+    def _split_name(self, value):
+        parts = (value or '').split()
+        if not parts:
+            return False, False
+        firstname = parts[0]
+        surname = " ".join(parts[1:]) or False
+        return firstname, surname
+
     @api.onchange('firstname', 'surname')
     def _onchange_complete_name(self):
+        if self.firstname:
+            self.firstname = self._capitalize_name(self.firstname)
+        if self.surname:
+            self.surname = self._capitalize_name(self.surname)
         names = [n for n in [self.firstname, self.surname] if n]
         self.name = " ".join(names)
 
@@ -33,12 +50,34 @@ class GymTrainer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if vals.get('firstname'):
+                vals['firstname'] = self._capitalize_name(vals['firstname'])
+            if vals.get('surname'):
+                vals['surname'] = self._capitalize_name(vals['surname'])
+            if not vals.get('firstname') and vals.get('name'):
+                firstname, surname = self._split_name(vals['name'])
+                vals['firstname'] = firstname
+                if surname and not vals.get('surname'):
+                    vals['surname'] = surname
             if not vals.get('name'):
                 firstname = vals.get('firstname') or ''
                 surname = vals.get('surname') or ''
                 name = f"{firstname} {surname}".strip()
                 vals['name'] = name or 'New Trainer'
         return super().create(vals_list)
+
+    def write(self, vals):
+        vals = dict(vals)
+        if vals.get('firstname'):
+            vals['firstname'] = self._capitalize_name(vals['firstname'])
+        if vals.get('surname'):
+            vals['surname'] = self._capitalize_name(vals['surname'])
+        if not vals.get('firstname') and vals.get('name'):
+            firstname, surname = self._split_name(vals['name'])
+            vals['firstname'] = firstname
+            if surname and not vals.get('surname'):
+                vals['surname'] = surname
+        return super().write(vals)
 
     specialty_ids = fields.Many2many('gym.trainer.specialty', string='Specialties')
     bio = fields.Text(string='Biography')
