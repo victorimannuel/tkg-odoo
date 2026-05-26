@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_custom_profit_loss"
+        name="Profit and Loss"
+        parent="account.menu_finance_reports"
+        action="action_custom_profit_loss_wizard"
+        sequence="46"
+    />
+
+    <menuitem
+        id="menu_custom_balance_sheet"
+        name="Balance Sheet"
+        parent="account.menu_finance_reports"
+        action="action_custom_balance_sheet_wizard"
+        sequence="47"
+    />
+</odoo>

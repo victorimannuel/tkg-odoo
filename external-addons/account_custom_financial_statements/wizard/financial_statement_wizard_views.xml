@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_custom_financial_statement_wizard_form" model="ir.ui.view">
+        <field name="name">custom.financial.statement.wizard.form</field>
+        <field name="model">custom.financial.statement.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Financial Statement">
+                <group>
+                    <field
+                        name="company_id"
+                        groups="base.group_multi_company"
+                        options="{'no_create': True}"
+                    />
+                    <field name="report_type" widget="radio" />
+                    <field name="target_move" widget="radio" />
+                </group>
+                <group>
+                    <field name="date_from" invisible="report_type != 'pl'" />
+                    <field name="date_to" />
+                </group>
+                <footer>
+                    <button
+                        name="action_print_html"
+                        type="object"
+                        string="View"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_print_pdf"
+                        type="object"
+                        string="Export PDF"
+                    />
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_profit_loss_wizard" model="ir.actions.act_window">
+        <field name="name">Profit and Loss</field>
+        <field name="res_model">custom.financial.statement.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_custom_financial_statement_wizard_form" />
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'pl'}</field>
+    </record>
+
+    <record id="action_custom_balance_sheet_wizard" model="ir.actions.act_window">
+        <field name="name">Balance Sheet</field>
+        <field name="res_model">custom.financial.statement.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_custom_financial_statement_wizard_form" />
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'bs'}</field>
+    </record>
+</odoo>
