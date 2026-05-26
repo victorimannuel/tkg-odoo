@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--
+            Administrators can read every todo record across all users.
+            Keep write/create/unlink disabled in this rule.
+        -->
+        <record id="rule_todo_admin_read_all" model="ir.rule">
+            <field name="name">Todo: Administrators read all records</field>
+            <field name="model_id" search="[('model', '=', 'todo.task')]"/>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>
