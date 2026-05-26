@@ -11,3 +11,4 @@ class ProductCategory(models.Model):
     ], string='Gym Category Type', default='other')
     
     active = fields.Boolean(default=True)
+    sequence = fields.Integer(default=10, string="Sequence")

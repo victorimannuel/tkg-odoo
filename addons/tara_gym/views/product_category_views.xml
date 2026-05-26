@@ -12,5 +12,18 @@
                 </field>
             </field>
         </record>
+
+        <record id="view_gym_category_list" model="ir.ui.view">
+            <field name="name">gym.category.list</field>
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <list default_order="sequence asc, complete_name asc">
+                    <field name="sequence" widget="handle"/>
+                    <field name="display_name" string="Category Name"/>
+                    <field name="gym_category_type"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
     </data>
 </odoo>

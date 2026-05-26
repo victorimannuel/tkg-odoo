@@ -14,6 +14,7 @@
             <field name="view_mode">list,form</field>
             <field name="domain">[('gym_category_type', '=', 'service')]</field>
             <field name="context">{'default_gym_category_type': 'service', 'default_name': 'Service / '}</field>
+            <field name="view_id" ref="tara_gym.view_gym_category_list"/>
         </record>
 
         <record id="view_gym_service_list" model="ir.ui.view">

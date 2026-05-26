@@ -31,6 +31,9 @@
         'data/gym_data.xml',
         'data/gym_cron.xml',
 
+        # Views - Category
+        'views/product_category_views.xml',
+
         # Views - People
         'views/gym_member_views.xml',
         'views/gym_member_tag_views.xml',
@@ -55,7 +58,6 @@
         # Views - Services
         'views/gym_service_views.xml',
         'views/gym_service_booking_views.xml',
-        'views/product_category_views.xml',
         'views/res_config_settings_views.xml',
         
         # Views - Portals

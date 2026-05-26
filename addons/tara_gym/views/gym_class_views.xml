@@ -14,6 +14,7 @@
             <field name="view_mode">list,form</field>
             <field name="domain">[('gym_category_type', '=', 'class')]</field>
             <field name="context">{'default_gym_category_type': 'class', 'default_name': 'Class / '}</field>
+            <field name="view_id" ref="tara_gym.view_gym_category_list"/>
         </record>
 
         <record id="view_gym_class_list" model="ir.ui.view">
