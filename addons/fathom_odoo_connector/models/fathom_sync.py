@@ -213,21 +213,21 @@ class FathomSync(models.AbstractModel):
                     if match_debug:
                         log.match_debug = json.dumps(match_debug, default=str)
                     if not event:
-                        stats['failed'] += 1
-                        continue
-
+                        # Log that we couldn't match an event, but still proceed to create the summary
+                        log.match_debug = json.dumps(match_debug, default=str)
+                    
                 transcript_details = self._fetch_transcript(client, recording_id)
                 action_items = meeting.get('action_items') or []
                 summary_markdown = self._extract_summary_markdown(meeting.get('default_summary') or meeting.get('summary'))
                 summary_vals = {
-                    'name': meeting.get('meeting_title') or meeting.get('title') or event.name or recording_id,
+                    'name': meeting.get('meeting_title') or meeting.get('title') or (event.name if event else False) or recording_id,
                     'account_id': account.id,
-                    'calendar_event_id': event.id,
+                    'calendar_event_id': event.id if event else False,
                     'recording_id': recording_id,
                     'meeting_url': meeting.get('url'),
                     'share_url': meeting.get('share_url'),
-                    'meeting_start': self._to_utc_datetime(meeting.get('scheduled_start_time')) or event.start,
-                    'meeting_end': self._to_utc_datetime(meeting.get('scheduled_end_time')) or event.stop,
+                    'meeting_start': self._to_utc_datetime(meeting.get('scheduled_start_time')) or (event.start if event else False),
+                    'meeting_end': self._to_utc_datetime(meeting.get('scheduled_end_time')) or (event.stop if event else False),
                     'source_created_at': self._to_utc_datetime(meeting.get('created_at')),
                     'summary_markdown': summary_markdown,
                     'action_items_json': json.dumps(action_items, default=str),
@@ -240,7 +240,8 @@ class FathomSync(models.AbstractModel):
                 else:
                     summary = self.env['fathom.meeting.summary'].create(summary_vals)
                     stats['created'] += 1
-                event.write({'fathom_meeting_summary_id': summary.id})
+                if event:
+                    event.write({'fathom_meeting_summary_id': summary.id})
 
                 created_at = self._to_utc_datetime(meeting.get('created_at'))
                 if created_at and (not newest_created_at or created_at > newest_created_at):

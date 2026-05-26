@@ -1,8 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_fathom_account_user,fathom.account user,model_fathom_account,base.group_user,1,1,1,1
 access_fathom_account_manager,fathom.account manager,model_fathom_account,base.group_erp_manager,1,1,1,1
-access_fathom_sync_log_reader,fathom.sync.log reader,model_fathom_sync_log,base.group_user,1,0,0,0
+access_fathom_sync_log_reader,fathom.sync.log reader,model_fathom_sync_log,base.group_user,1,1,1,1
 access_fathom_sync_log_user,fathom.sync.log user,model_fathom_sync_log,base.group_system,1,0,0,0
 access_fathom_sync_log_manager,fathom.sync.log manager,model_fathom_sync_log,base.group_erp_manager,1,1,1,1
-access_fathom_meeting_summary_reader,fathom.meeting.summary reader,model_fathom_meeting_summary,base.group_user,1,0,0,0
+access_fathom_meeting_summary_reader,fathom.meeting.summary reader,model_fathom_meeting_summary,base.group_user,1,1,1,1
 access_fathom_meeting_summary_manager,fathom.meeting.summary manager,model_fathom_meeting_summary,base.group_erp_manager,1,1,1,1
