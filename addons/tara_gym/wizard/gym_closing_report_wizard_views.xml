@@ -60,18 +60,21 @@
                             <field name="products_lines" nolabel="1" readonly="1"/>
                         </group>
                     </group>
-                    <group string="Complimentary">
-                        <group>
+                    <group>
+                        <group string="Services">
+                            <field name="services_total"/>
+                            <field name="services_lines" nolabel="1" readonly="1"/>
+                        </group>
+                        <group string="Complimentary">
                             <field name="complimentary_product_count" readonly="1"/>
                             <field name="complimentary_total_value" readonly="1"/>
-                        </group>
-                        <group>
                             <field name="complimentary_lines" nolabel="1" readonly="1"/>
                         </group>
                     </group>
 
                     <group string="Total">
                         <field name="total_revenue" readonly="1"/>
+                        <field name="payment_difference" readonly="1"/>
                     </group>
 
                     <group string="Month to Date">
@@ -79,13 +82,26 @@
                             <field name="mtd_membership_total"/>
                             <field name="mtd_fnb_total"/>
                             <field name="mtd_product_total"/>
+                            <field name="mtd_services_total"/>
+                            <field name="mtd_payment_difference"/>
                         </group>
                         <group>
                             <field name="grand_total" readonly="1"/>
                             <field name="daily_average" readonly="1"/>
                         </group>
                     </group>
-                    
+
+                    <separator string="POS Order Lines"/>
+                    <field name="pos_order_line_ids" readonly="1" nolabel="1">
+                        <list create="false" delete="false" edit="false">
+                            <field name="order_id" string="Order" optional="show"/>
+                            <field name="product_id" string="Product"/>
+                            <field name="qty" string="Qty"/>
+                            <field name="price_subtotal_incl" string="Total" widget="monetary"/>
+                            <field name="is_complimentary" string="Comp?" optional="show"/>
+                        </list>
+                    </field>
+
                 </sheet>
                 <footer>
                     <button string="Print PDF" type="object" name="action_print_report" class="oe_highlight"/>

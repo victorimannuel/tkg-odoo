@@ -122,6 +122,14 @@
                                                             <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.products_total)"/>
                                                         </tr>
                                                         <tr>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Services</td>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.services_total)"/>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Payment Difference</td>
+                                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.payment_difference)"/>
+                                                        </tr>
+                                                        <tr>
                                                             <td style="padding: 13px 16px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Total Revenue</td>
                                                             <td style="padding: 13px 16px; background: #f4f7f5; text-align: right; font-size: 17px; font-weight: 700; color: #1f5f4a;" t-esc="doc.format_idr(doc.total_revenue)"/>
                                                         </tr>
@@ -171,8 +179,8 @@
                                 <table style="width: 100%; border-collapse: separate; margin-bottom: 22px;">
                                     <tbody>
                                         <tr>
-                                            <td style="width: 33.33%; vertical-align: top; padding-right: 10px; border: none;">
-                                                <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Memberships / Passes</div>
+                                            <td style="width: 25%; vertical-align: top; padding-right: 10px; border: none;">
+                                                <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Memberships</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.memberships_total)"/>
                                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
                                                     <tbody t-if="doc.memberships_lines">
@@ -189,7 +197,7 @@
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td style="width: 33.33%; vertical-align: top; padding: 0 10px; border: none;">
+                                            <td style="width: 25%; vertical-align: top; padding: 0 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">F&amp;B</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.fnb_total)"/>
                                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
@@ -207,7 +215,7 @@
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td style="width: 33.33%; vertical-align: top; padding-left: 10px; border: none;">
+                                            <td style="width: 25%; vertical-align: top; padding: 0 10px; border: none;">
                                                 <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Products</div>
                                                 <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.products_total)"/>
                                                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
@@ -221,6 +229,24 @@
                                                     <tbody t-if="not doc.products_lines">
                                                         <tr>
                                                             <td style="padding: 8px 10px; color: #98a2ad;">No product sales recorded.</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td style="width: 25%; vertical-align: top; padding-left: 10px; border: none;">
+                                                <div style="font-size: 13px; font-weight: 700; color: #0f1720; border-bottom: 2px solid #1f5f4a; padding-bottom: 6px; margin-bottom: 10px;">Services</div>
+                                                <div style="font-size: 18px; font-weight: 700; color: #1f5f4a; margin-bottom: 8px;" t-esc="doc.format_idr(doc.services_total)"/>
+                                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #d9e1e7;">
+                                                    <tbody t-if="doc.services_lines">
+                                                        <t t-foreach="doc.detail_lines(doc.services_lines)" t-as="line">
+                                                            <tr>
+                                                                <td style="padding: 8px 10px; border-bottom: 1px solid #eef2f5;" t-esc="line"/>
+                                                            </tr>
+                                                        </t>
+                                                    </tbody>
+                                                    <tbody t-if="not doc.services_lines">
+                                                        <tr>
+                                                            <td style="padding: 8px 10px; color: #98a2ad;">No service sales.</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -278,6 +304,10 @@
                                         <tr>
                                             <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Product</td>
                                             <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_product_total)"/>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; color: #55606d;">Services</td>
+                                            <td style="padding: 11px 16px; border-bottom: 1px solid #e8edf1; text-align: right; font-weight: 700;" t-esc="doc.format_idr(doc.mtd_services_total)"/>
                                         </tr>
                                         <tr>
                                             <td style="padding: 13px 16px; background: #f4f7f5; font-weight: 700; color: #0f1720;">Grand Total</td>

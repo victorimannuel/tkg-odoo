@@ -77,6 +77,11 @@ class GymClosingReportWizard(models.TransientModel):
         string='Products Breakdown',
         compute='_compute_report_data',
     )
+    services_total = fields.Float(string='Services', compute='_compute_report_data')
+    services_lines = fields.Text(
+        string='Services Breakdown',
+        compute='_compute_report_data',
+    )
     complimentary_product_count = fields.Float(string='Complimentary Products', compute='_compute_report_data')
     complimentary_total_value = fields.Float(string='Complimentary Total Value', compute='_compute_report_data')
     complimentary_lines = fields.Text(
@@ -87,6 +92,7 @@ class GymClosingReportWizard(models.TransientModel):
     mtd_membership_total = fields.Float(string='Month to Date Membership', compute='_compute_report_data')
     mtd_fnb_total = fields.Float(string='Month to Date F&B', compute='_compute_report_data')
     mtd_product_total = fields.Float(string='Month to Date Product', compute='_compute_report_data')
+    mtd_services_total = fields.Float(string='Month to Date Services', compute='_compute_report_data')
 
     class_count = fields.Integer(string='Classes', compute='_compute_report_data')
     class_total_attendees = fields.Integer(string='Class Attendees', compute='_compute_report_data')
@@ -94,6 +100,14 @@ class GymClosingReportWizard(models.TransientModel):
     total_revenue = fields.Float(string='Total Revenue', compute='_compute_report_data')
     grand_total = fields.Float(string='Grand Total', compute='_compute_report_data')
     daily_average = fields.Float(string='Daily Average', compute='_compute_report_data')
+    payment_difference = fields.Float(string='Payment Difference', compute='_compute_report_data')
+    mtd_payment_difference = fields.Float(string='MTD Payment Difference', compute='_compute_report_data')
+
+    pos_order_line_ids = fields.Many2many(
+        'pos.order.line',
+        string='POS Order Lines',
+        compute='_compute_report_data',
+    )
 
     report_date_label = fields.Char(string='Report Date Label', compute='_compute_labels')
     mtd_period_label = fields.Char(string='MTD Period Label', compute='_compute_labels')
@@ -135,35 +149,61 @@ class GymClosingReportWizard(models.TransientModel):
             return 'fnb'
         return 'product'
 
-    def _collect_membership_data(self, start_dt, end_dt):
-        subscriptions = self.env['gym.membership.subscription'].sudo().search([
-            ('create_date', '>=', start_dt),
-            ('create_date', '<', end_dt),
-            ('state', '!=', 'canceled'),
+    def _collect_membership_data(self, start_dt, end_dt, membership_product_map):
+        """Collect membership revenue and counts from paid POS order lines.
+
+        Args:
+            membership_product_map (dict): {product_id: gym.membership record}
+        """
+        line_model = self.env['pos.order.line'].sudo()
+        membership_product_ids = list(membership_product_map.keys())
+
+        lines = line_model.search([
+            ('order_id.date_order', '>=', start_dt),
+            ('order_id.date_order', '<', end_dt),
+            ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
+            ('product_id', 'in', membership_product_ids),
+            ('is_complimentary', '=', False),
         ])
+
         quantities = defaultdict(float)
         new_members = 0
         renew_members = 0
         total = 0.0
+        pos_orders = lines.mapped('order_id')
 
-        for sub in subscriptions:
-            quantities[sub.membership_id.display_name or sub.membership_id.name or 'Membership'] += 1
-            total += sub.price
-            member_created = fields.Datetime.context_timestamp(sub, sub.member_id.create_date)
-            if member_created.date() == self.report_date:
-                new_members += 1
-            else:
-                renew_members += 1
+        for line in lines:
+            membership = membership_product_map.get(line.product_id.id)
+            name = (membership and (membership.display_name or membership.name)) or line.product_id.name or 'Membership'
+            quantities[name] += line.qty
+            total += line.price_subtotal_incl
+
+            # Determine new vs renewing: check if a matching subscription was created today
+            partner = line.order_id.partner_id
+            if partner:
+                member = self.env['gym.member'].sudo().search(
+                    [('partner_id', '=', partner.id)], limit=1
+                )
+                if member:
+                    member_created = fields.Datetime.context_timestamp(member, member.create_date)
+                    if member_created.date() == self.report_date:
+                        new_members += 1
+                    else:
+                        renew_members += 1
 
         return {
-            'subscriptions': subscriptions,
+            'pos_orders': pos_orders,
             'lines': self._dict_to_lines(quantities),
             'new_member_count': new_members,
             'renew_member_count': renew_members,
             'total': total,
         }
 
-    def _collect_pos_data(self, start_dt, end_dt):
+    def _collect_pos_data(self, start_dt, end_dt, gym_product_ids, service_product_ids):
+        """Collect F&B, products, services, and complimentary data from POS order lines.
+
+        Memberships and classes are excluded (gym_product_ids). Services are counted here.
+        """
         line_model = self.env['pos.order.line'].sudo()
         lines = line_model.search([
             ('order_id.date_order', '>=', start_dt),
@@ -171,15 +211,13 @@ class GymClosingReportWizard(models.TransientModel):
             ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
         ])
 
-        gym_product_ids = set(self.env['gym.membership'].sudo().search([]).mapped('product_id').ids)
-        gym_product_ids.update(self.env['gym.class'].sudo().search([]).mapped('product_id').ids)
-        gym_product_ids.update(self.env['gym.service'].sudo().search([]).mapped('product_id').ids)
-
         fnb_quantities = defaultdict(float)
         product_quantities = defaultdict(float)
+        services_quantities = defaultdict(float)
         complimentary_quantities = defaultdict(float)
         fnb_total = 0.0
         product_total = 0.0
+        services_total = 0.0
         complimentary_lines = lines.filtered('is_complimentary')
         complimentary_total_value = sum(complimentary_lines.mapped('complimentary_value'))
         complimentary_product_count = sum(abs(qty) for qty in complimentary_lines.mapped('qty'))
@@ -197,9 +235,15 @@ class GymClosingReportWizard(models.TransientModel):
             if product.id in gym_product_ids:
                 continue
 
-            section = self._classify_non_gym_product(product)
-            line_total = line.price_subtotal_incl
             qty = line.qty
+            line_total = line.price_subtotal_incl
+
+            if product.id in service_product_ids:
+                services_quantities[name] += qty
+                services_total += line_total
+                continue
+
+            section = self._classify_non_gym_product(product)
 
             if section == 'fnb':
                 fnb_quantities[name] += qty
@@ -214,6 +258,8 @@ class GymClosingReportWizard(models.TransientModel):
             'fnb_total': fnb_total,
             'products_lines': self._dict_to_lines(product_quantities),
             'products_total': product_total,
+            'services_lines': self._dict_to_lines(services_quantities),
+            'services_total': services_total,
             'complimentary_product_count': complimentary_product_count,
             'complimentary_total_value': complimentary_total_value,
             'complimentary_lines': self._dict_to_lines(complimentary_quantities),
@@ -315,6 +361,8 @@ class GymClosingReportWizard(models.TransientModel):
                 wizard.fnb_lines = False
                 wizard.products_total = 0.0
                 wizard.products_lines = False
+                wizard.services_total = 0.0
+                wizard.services_lines = False
                 wizard.complimentary_product_count = 0
                 wizard.complimentary_total_value = 0.0
                 wizard.complimentary_lines = False
@@ -326,6 +374,8 @@ class GymClosingReportWizard(models.TransientModel):
                 wizard.total_revenue = 0.0
                 wizard.grand_total = 0.0
                 wizard.daily_average = 0.0
+                wizard.payment_difference = 0.0
+                wizard.mtd_payment_difference = 0.0
                 continue
 
             report_date = fields.Date.to_date(wizard.report_date)
@@ -333,15 +383,25 @@ class GymClosingReportWizard(models.TransientModel):
             month_start = report_date.replace(day=1)
             month_start_dt, _ = wizard._get_utc_range_for_local_date(month_start)
 
-            daily_membership = wizard._collect_membership_data(day_start, day_end)
-            daily_pos = wizard._collect_pos_data(day_start, day_end)
+            # Build product maps once and share across both collect methods
+            all_memberships = wizard.env['gym.membership'].sudo().search([])
+            membership_product_map = {
+                m.product_id.id: m for m in all_memberships if m.product_id
+            }
+            membership_product_ids = set(membership_product_map.keys())
+            class_product_ids = set(wizard.env['gym.class'].sudo().search([]).mapped('product_id').ids)
+            service_product_ids = set(wizard.env['gym.service'].sudo().search([]).mapped('product_id').ids)
+            gym_product_ids = membership_product_ids | class_product_ids
+
+            daily_membership = wizard._collect_membership_data(day_start, day_end, membership_product_map)
+            daily_pos = wizard._collect_pos_data(day_start, day_end, gym_product_ids, service_product_ids)
             daily_visit = wizard._collect_visit_data(day_start, day_end)
             daily_class = wizard._collect_class_data(day_start, day_end)
 
-            mtd_membership = wizard._collect_membership_data(month_start_dt, day_end)
-            mtd_pos = wizard._collect_pos_data(month_start_dt, day_end)
+            mtd_membership = wizard._collect_membership_data(month_start_dt, day_end, membership_product_map)
+            mtd_pos = wizard._collect_pos_data(month_start_dt, day_end, gym_product_ids, service_product_ids)
 
-            staff_user_ids = set(daily_membership['subscriptions'].mapped('create_uid').ids)
+            staff_user_ids = set(daily_membership['pos_orders'].mapped('create_uid').ids)
             staff_user_ids.update(daily_pos['orders'].mapped('create_uid').ids)
             staff_user_ids.update(daily_visit['visitors'].mapped('create_uid').ids)
 
@@ -364,6 +424,8 @@ class GymClosingReportWizard(models.TransientModel):
             wizard.fnb_lines = daily_pos['fnb_lines']
             wizard.products_total = daily_pos['products_total']
             wizard.products_lines = daily_pos['products_lines']
+            wizard.services_total = daily_pos['services_total']
+            wizard.services_lines = daily_pos['services_lines']
             wizard.complimentary_product_count = daily_pos['complimentary_product_count']
             wizard.complimentary_total_value = daily_pos['complimentary_total_value']
             wizard.complimentary_lines = daily_pos['complimentary_lines']
@@ -374,18 +436,36 @@ class GymClosingReportWizard(models.TransientModel):
             wizard.mtd_membership_total = mtd_membership['total']
             wizard.mtd_fnb_total = mtd_pos['fnb_total']
             wizard.mtd_product_total = mtd_pos['products_total']
+            wizard.mtd_services_total = mtd_pos['services_total']
+
+            all_orders = daily_pos['orders'] | daily_membership['pos_orders']
+            wizard.payment_difference = sum(all_orders.mapped('amount_difference'))
+
+            mtd_all_orders = mtd_pos['orders'] | mtd_membership['pos_orders']
+            wizard.mtd_payment_difference = sum(mtd_all_orders.mapped('amount_difference'))
 
             wizard.total_revenue = (
                 wizard.memberships_total
                 + wizard.fnb_total
                 + wizard.products_total
+                + wizard.services_total
+                + wizard.payment_difference
             )
             wizard.grand_total = (
                 wizard.mtd_membership_total
                 + wizard.mtd_fnb_total
                 + wizard.mtd_product_total
+                + wizard.mtd_services_total
+                + wizard.mtd_payment_difference
             )
             wizard.daily_average = wizard.grand_total / report_date.day if report_date.day else 0.0
+
+            # All POS order lines for the day that feed into the report
+            wizard.pos_order_line_ids = wizard.env['pos.order.line'].sudo().search([
+                ('order_id.date_order', '>=', day_start),
+                ('order_id.date_order', '<', day_end),
+                ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
+            ]).ids
 
     @api.depends('report_date')
     def _compute_labels(self):
