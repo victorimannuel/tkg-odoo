@@ -119,7 +119,7 @@
                             <page string="Membership">
                                 <group string="Membership History">
                                     <field name="subscription_ids" readonly="1" nolabel="1" colspan="2">
-                                        <list decoration-muted="state == 'expired'" decoration-info="state == 'draft'" decoration-success="state == 'running'">
+                                        <list default_order="date_start desc" decoration-muted="state == 'expired'" decoration-info="state == 'draft'" decoration-success="state == 'running'">
                                             <field name="membership_id"/>
                                             <field name="price"/>
                                             <field name="date_start"/>

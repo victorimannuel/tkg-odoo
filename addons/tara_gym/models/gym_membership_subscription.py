@@ -118,8 +118,20 @@ class GymMembershipSubscription(models.Model):
     def _compute_visit_usage(self):
         today = fields.Date.context_today(self)
         for sub in self:
-            start_date = sub.date_start
+            start_date = sub.date_start or today
             end_date = sub.date_end or today
+
+            member_id = sub.member_id._origin.id or sub.member_id.id
+            if member_id:
+                next_sub = self.env['gym.membership.subscription'].search([
+                    ('member_id', '=', member_id),
+                    ('date_start', '>', start_date),
+                    ('state', 'not in', ['draft', 'canceled'])
+                ], order='date_start asc', limit=1)
+                
+                if next_sub and next_sub.date_start <= end_date:
+                    end_date = next_sub.date_start - relativedelta(days=1)
+
             if end_date < start_date:
                 end_date = start_date
             
@@ -213,12 +225,29 @@ class GymMembershipSubscription(models.Model):
             ('member_id', '=', self.member_id.id),
             ('state', 'in', ['confirmed', 'attended']),
         ]
-        if self.date_start:
-            start_dt = datetime.combine(self.date_start, time.min)
-            domain.append(('session_id.start_datetime', '>=', start_dt))
-        if self.date_end:
-            end_dt = datetime.combine(self.date_end, time.max)
-            domain.append(('session_id.start_datetime', '<=', end_dt))
+        today = fields.Date.context_today(self)
+        start_date = self.date_start or today
+        end_date = self.date_end or today
+
+        member_id = self.member_id._origin.id or self.member_id.id
+        if member_id:
+            next_sub = self.env['gym.membership.subscription'].search([
+                ('member_id', '=', member_id),
+                ('date_start', '>', start_date),
+                ('state', 'not in', ['draft', 'canceled'])
+            ], order='date_start asc', limit=1)
+            
+            if next_sub and next_sub.date_start <= end_date:
+                end_date = next_sub.date_start - relativedelta(days=1)
+
+        if end_date < start_date:
+            end_date = start_date
+
+        start_dt = datetime.combine(start_date, time.min)
+        domain.append(('session_id.start_datetime', '>=', start_dt))
+        
+        end_dt = datetime.combine(end_date, time.max)
+        domain.append(('session_id.start_datetime', '<=', end_dt))
         return {
             'name': _('Class Enrollments - %s') % self.membership_id.name,
             'type': 'ir.actions.act_window',
