@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dokumentasi Dashboard Accounting</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1b2430;
+      --muted: #5b6878;
+      --primary: #0a6cc7;
+      --primary-soft: #e8f3ff;
+      --border: #dbe3ef;
+      --ok: #0f8f4f;
+      --warn: #c97a00;
+      --danger: #b42318;
+      --shadow: 0 8px 24px rgba(19, 35, 64, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fbff, var(--bg));
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0a6cc7, #1f8ef1);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: 0.95;
+    }
+
+    .toc {
+      margin-top: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .toc h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px 14px;
+    }
+
+    .toc a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .section h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    ul, ol { margin: 8px 0 0 20px; }
+
+    code {
+      background: #eef4fb;
+      border: 1px solid #d6e4f7;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: "Consolas", "Menlo", monospace;
+      font-size: 0.92em;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .chip.ok { color: var(--ok); border-color: #9edbb8; background: #ecfaf2; }
+    .chip.warn { color: var(--warn); border-color: #f2d29b; background: #fff8ea; }
+    .chip.danger { color: var(--danger); border-color: #f0b5b5; background: #fff2f2; }
+
+    .note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #bfd9f7;
+      background: var(--primary-soft);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f5f9ff; }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 24px; }
+      .section h3 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>Dokumentasi Dashboard Accounting</h1>
+      <p>Panduan sederhana untuk memahami fitur dashboard <code>account_board_dashboard</code> (Odoo).</p>
+    </header>
+
+    <nav class="toc" aria-label="Daftar Isi">
+      <h2>Daftar Isi</h2>
+      <div class="toc-grid">
+        <a href="#tujuan">1. Tujuan Dashboard</a>
+        <a href="#menu">2. Lokasi Menu</a>
+        <a href="#kontrol">3. Filter & Kontrol</a>
+        <a href="#currency">4. Warning Multi Mata Uang</a>
+        <a href="#kpi">5. KPI Strip</a>
+        <a href="#revenue-share">6. Revenue Share</a>
+        <a href="#risk">7. Top Risk Indicators</a>
+        <a href="#runway">8. Cash Runway</a>
+        <a href="#aging">9. Aging Buckets</a>
+        <a href="#what-changed">10. What Changed</a>
+        <a href="#trend">11. Consolidated Trend</a>
+        <a href="#audit">12. Auditability Panel</a>
+        <a href="#benchmark">13. Peer Benchmarking</a>
+        <a href="#detail">14. Detailed Views</a>
+        <a href="#drill">15. Drill-Down</a>
+        <a href="#pdf">16. Export PDF</a>
+        <a href="#catatan">17. Catatan Penting</a>
+        <a href="#istilah">18. Definisi Istilah</a>
+        <a href="#alur">19. Alur Pakai</a>
+        <a href="#troubleshoot">20. Troubleshooting</a>
+      </div>
+    </nav>
+
+    <section id="tujuan" class="section">
+      <h3>1) Tujuan Dashboard</h3>
+      <p>Membantu BOD/management melihat kesehatan keuangan tanpa buka banyak report terpisah.</p>
+      <ul>
+        <li>Ringkasan KPI penting</li>
+        <li>Risiko utama (piutang, likuiditas)</li>
+        <li>Tren performa dan benchmark antar company</li>
+        <li>Drill-down ke data akuntansi detail</li>
+        <li>Export PDF untuk rapat</li>
+      </ul>
+    </section>
+
+    <section id="menu" class="section">
+      <h3>2) Lokasi Menu</h3>
+      <p>Buka menu: <code>Dashboard &gt; Accounting</code>.</p>
+      <p>Akses user harus memiliki group: <code>Board Accounting Dashboard</code>.</p>
+    </section>
+
+    <section id="kontrol" class="section">
+      <h3>3) Filter dan Kontrol Atas</h3>
+      <ul>
+        <li><code>Period</code>: <code>YTD</code> atau <code>MTD</code></li>
+        <li><code>Refresh</code>: ambil data terbaru</li>
+        <li><code>Export PDF</code>: cetak laporan board (QWeb PDF)</li>
+        <li><code>Theme</code>: ganti tema tampilan</li>
+        <li><code>Full Screen</code>: mode presentasi</li>
+      </ul>
+      <div class="note">Info penting: <strong>Live as of</strong> = waktu refresh terakhir, <strong>Snapshot Date</strong> = tanggal data KPI.</div>
+    </section>
+
+    <section id="currency" class="section">
+      <h3>4) Peringatan Multi Mata Uang</h3>
+      <p>Jika ada company dengan currency berbeda, dashboard menampilkan warning.</p>
+      <p>Artinya total gabungan bisa bias jika belum dikonversi ke satu mata uang reporting.</p>
+    </section>
+
+    <section id="kpi" class="section">
+      <h3>5) KPI Strip (Ringkasan Cepat)</h3>
+      <p>KPI utama:</p>
+      <div class="chips">
+        <span class="chip">Revenue</span>
+        <span class="chip">Gross Profit</span>
+        <span class="chip">Net Profit</span>
+        <span class="chip">Cash Balance</span>
+        <span class="chip">AR Open</span>
+        <span class="chip">AP Open</span>
+        <span class="chip">DSO</span>
+        <span class="chip">DPO</span>
+        <span class="chip">Quick Ratio</span>
+      </div>
+      <table>
+        <thead><tr><th>Abbrev</th><th>Arti</th></tr></thead>
+        <tbody>
+          <tr><td>AR</td><td>Accounts Receivable (Piutang)</td></tr>
+          <tr><td>AP</td><td>Accounts Payable (Hutang)</td></tr>
+          <tr><td>DSO</td><td>Days Sales Outstanding: rata-rata hari penagihan piutang</td></tr>
+          <tr><td>DPO</td><td>Days Payables Outstanding: rata-rata hari pembayaran ke supplier</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Badge KPI seperti <code>Healthy</code>, <code>Watch</code>, <code>Critical</code> adalah indikator cepat kondisi, bukan budget attainment.</div>
+    </section>
+
+    <section id="revenue-share" class="section">
+      <h3>6) Revenue Share by Company</h3>
+      <p>Chart donut memperlihatkan porsi kontribusi revenue tiap company terhadap total periode terpilih.</p>
+      <p>Klik item legend company untuk drill ke revenue lines detail.</p>
+    </section>
+
+    <section id="risk" class="section">
+      <h3>7) Top Risk Indicators</h3>
+      <ul>
+        <li><code>Overdue AR 90+</code></li>
+        <li><code>Quick Ratio (Cash + AR) / AP</code></li>
+      </ul>
+      <div class="chips">
+        <span class="chip ok">LOW</span>
+        <span class="chip warn">MEDIUM</span>
+        <span class="chip danger">HIGH</span>
+      </div>
+      <p>Tersedia tombol drill ke overdue receivables detail.</p>
+    </section>
+
+    <section id="runway" class="section">
+      <h3>8) Cash Runway</h3>
+      <p>Menampilkan estimasi berapa bulan cash saat ini cukup untuk menutup OpEx rata-rata bulanan.</p>
+      <ul>
+        <li><code>critical</code>: runway sangat pendek</li>
+        <li><code>watch</code>: perlu perhatian</li>
+        <li><code>healthy</code>: relatif aman</li>
+      </ul>
+    </section>
+
+    <section id="aging" class="section">
+      <h3>9) Aging Buckets Overview</h3>
+      <p>Distribusi umur AR/AP dalam bucket:</p>
+      <div class="chips">
+        <span class="chip">Not Due</span>
+        <span class="chip">1-30</span>
+        <span class="chip">31-60</span>
+        <span class="chip">61-90</span>
+        <span class="chip">90+</span>
+      </div>
+    </section>
+
+    <section id="what-changed" class="section">
+      <h3>10) What Changed</h3>
+      <p>Panel insight otomatis (maksimal 3 poin) untuk menyorot perubahan paling penting sejak periode sebelumnya.</p>
+    </section>
+
+    <section id="trend" class="section">
+      <h3>11) Consolidated Revenue & Margin Trend</h3>
+      <p>Tabel tren bulanan hingga 24 bulan, menampilkan revenue, gross margin %, dan net margin %.</p>
+      <p>Baris net margin negatif diberi highlight agar cepat terdeteksi.</p>
+    </section>
+
+    <section id="audit" class="section">
+      <h3>12) Auditability Panel</h3>
+      <ul>
+        <li>Snapshot date, refresh timestamp, period aktif</li>
+        <li>Cek konsistensi Revenue Summary vs Monthly</li>
+        <li>Cek konsistensi AR Summary vs Aging</li>
+      </ul>
+      <p>Jika selisih melewati ambang, status ditandai <code>WARN</code>.</p>
+    </section>
+
+    <section id="benchmark" class="section">
+      <h3>13) Peer Benchmarking</h3>
+      <p>Perbandingan antar company berdasarkan growth %, net margin %, AR 90+ %, dan delta vs median grup.</p>
+    </section>
+
+    <section id="detail" class="section">
+      <h3>14) Detailed Views (Collapsible)</h3>
+      <ul>
+        <li>Profitability ranking</li>
+        <li>Decision panel berbasis data (muncul hanya jika trigger aktif)</li>
+      </ul>
+      <div class="note">Jika kondisi sehat semua, panel menampilkan <em>No actions required</em>.</div>
+    </section>
+
+    <section id="drill" class="section">
+      <h3>15) Drill-Down yang Tersedia</h3>
+      <ol>
+        <li>Klik company di Revenue Share untuk buka detail <code>account.move.line</code> (pivot/graph/list).</li>
+        <li>Klik <code>Drill Overdue Receivables</code> untuk analisis detail overdue AR.</li>
+      </ol>
+    </section>
+
+    <section id="pdf" class="section">
+      <h3>16) Export PDF</h3>
+      <p>Tombol <code>Export PDF</code> menghasilkan laporan board via QWeb PDF (server-side) agar format konsisten.</p>
+    </section>
+
+    <section id="catatan" class="section">
+      <h3>17) Catatan Penting / Batasan Saat Ini</h3>
+      <ol>
+        <li>Belum ada integrasi Budget vs Actual resmi.</li>
+        <li>Multi-currency konsolidasi belum FX-converted otomatis.</li>
+        <li>DSO/DPO/Runway adalah indikator operasional, bukan pengganti audit laporan keuangan penuh.</li>
+      </ol>
+    </section>
+
+    <section id="istilah" class="section">
+      <h3>18) Definisi Istilah Singkat</h3>
+      <table>
+        <thead><tr><th>Istilah</th><th>Definisi</th></tr></thead>
+        <tbody>
+          <tr><td>MTD</td><td>Month-to-Date (awal bulan sampai hari ini)</td></tr>
+          <tr><td>YTD</td><td>Year-to-Date (awal tahun sampai hari ini)</td></tr>
+          <tr><td>AR</td><td>Accounts Receivable (Piutang)</td></tr>
+          <tr><td>AP</td><td>Accounts Payable (Hutang)</td></tr>
+          <tr><td>DSO</td><td>Days Sales Outstanding (hari rata-rata penagihan)</td></tr>
+          <tr><td>DPO</td><td>Days Payables Outstanding (hari rata-rata pembayaran)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="alur" class="section">
+      <h3>19) Alur Pakai Rekomendasi (BOD Meeting)</h3>
+      <ol>
+        <li>Pilih period: <code>MTD</code> / <code>YTD</code>.</li>
+        <li>Lihat KPI strip, risk indicators, dan cash runway.</li>
+        <li>Cek revenue share + peer benchmarking.</li>
+        <li>Baca panel <code>What Changed</code> untuk narasi rapat.</li>
+        <li>Drill-down bila ada anomali.</li>
+        <li>Export PDF untuk dokumentasi meeting.</li>
+      </ol>
+    </section>
+
+    <section id="troubleshoot" class="section">
+      <h3>20) Troubleshooting Cepat</h3>
+      <ol>
+        <li>Klik <code>Refresh</code>.</li>
+        <li>Lakukan hard refresh browser.</li>
+        <li>Pastikan module <code>account_board_dashboard</code> sudah versi terbaru.</li>
+        <li>Pastikan user memiliki group <code>Board Accounting Dashboard</code>.</li>
+      </ol>
+    </section>
+
+    <footer>
+      Dokumentasi internal - account_board_dashboard - Update: 25 Mei 2026
+    </footer>
+  </div>
+</body>
+</html>

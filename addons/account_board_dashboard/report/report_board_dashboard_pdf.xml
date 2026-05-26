@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_board_dashboard_pdf" model="ir.actions.report">
+        <field name="name">Board Dashboard PDF</field>
+        <field name="model">account.board.kpi.summary</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">account_board_dashboard.report_board_dashboard_pdf</field>
+        <field name="report_file">account_board_dashboard.report_board_dashboard_pdf</field>
+        <field name="print_report_name">'Board Dashboard - %s' % (context_today().strftime('%Y-%m-%d'))</field>
+    </record>
+
+    <template id="report_board_dashboard_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Accounting Board Dashboard</h2>
+                    <p><strong>Period:</strong> <span t-esc="headline['period']"/></p>
+
+                    <h3>Headline KPIs</h3>
+                    <table class="table table-sm" style="width:100%; border-collapse: collapse;">
+                        <tbody>
+                            <tr><td>Revenue</td><td style="text-align:right;"><span t-esc="headline['revenue']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td></tr>
+                            <tr><td>Net Profit</td><td style="text-align:right;"><span t-esc="headline['net_profit']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td></tr>
+                            <tr><td>Cash</td><td style="text-align:right;"><span t-esc="headline['cash']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td></tr>
+                            <tr><td>Quick Ratio</td><td style="text-align:right;"><span t-esc="'%.2f' % headline['quick_ratio']"/></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Revenue Share</h3>
+                    <table class="table table-sm" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr><th>Company</th><th style="text-align:right;">Share %</th><th style="text-align:right;">Revenue</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="revenue_share" t-as="line">
+                                <td><span t-esc="line['company']"/></td>
+                                <td style="text-align:right;"><span t-esc="'%.1f' % line['pct']"/>%</td>
+                                <td style="text-align:right;"><span t-esc="line['value']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Consolidated Trend (12M)</h3>
+                    <table class="table table-sm" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr><th>Month</th><th style="text-align:right;">Revenue</th><th style="text-align:right;">Gross Margin %</th><th style="text-align:right;">Net Margin %</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="trend" t-as="line">
+                                <td><span t-esc="line['month']"/></td>
+                                <td style="text-align:right;"><span t-esc="line['revenue']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                <td style="text-align:right;"><span t-esc="'%.1f' % line['gross_margin_pct']"/>%</td>
+                                <td style="text-align:right;"><span t-esc="'%.1f' % line['net_margin_pct']"/>%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Risk Indicator</h3>
+                    <p>
+                        Overdue AR 90+: 
+                        <span t-esc="risks['overdue_90']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                        (<span t-esc="'%.1f' % risks['overdue_90_pct']"/>%)
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
