@@ -1,0 +1,3 @@
+[submodule "external-addons/triton-odoo"]
+	path = external-addons/triton-odoo
+	url = git@github.com:victorimannuel/triton-odoo.git
