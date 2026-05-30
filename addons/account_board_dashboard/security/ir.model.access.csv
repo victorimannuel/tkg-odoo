@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_board_kpi_summary,access.account.board.kpi.summary,model_account_board_kpi_summary,account_board_dashboard.group_account_board_dashboard,1,0,0,0
-access_account_board_kpi_monthly,access.account.board.kpi.monthly,model_account_board_kpi_monthly,account_board_dashboard.group_account_board_dashboard,1,0,0,0
-access_account_board_aging,access.account.board.aging,model_account_board_aging,account_board_dashboard.group_account_board_dashboard,1,0,0,0
