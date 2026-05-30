@@ -1,3 +1,43 @@
 [submodule "external-addons/triton-odoo"]
 	path = external-addons/triton-odoo
 	url = git@github.com:victorimannuel/triton-odoo.git
+[submodule "external-addons/OCA/account-analytic"]
+	path = external-addons/OCA/account-analytic
+	url = https://github.com/OCA/account-analytic.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-budgeting"]
+	path = external-addons/OCA/account-budgeting
+	url = https://github.com/OCA/account-budgeting.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-financial-reporting"]
+	path = external-addons/OCA/account-financial-reporting
+	url = https://github.com/OCA/account-financial-reporting.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-financial-tools"]
+	path = external-addons/OCA/account-financial-tools
+	url = https://github.com/OCA/account-financial-tools.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-invoicing"]
+	path = external-addons/OCA/account-invoicing
+	url = https://github.com/OCA/account-invoicing.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-payment"]
+	path = external-addons/OCA/account-payment
+	url = https://github.com/OCA/account-payment.git
+	branch = 19.0
+[submodule "external-addons/OCA/account-reconcile"]
+	path = external-addons/OCA/account-reconcile
+	url = https://github.com/OCA/account-reconcile.git
+	branch = 19.0
+[submodule "external-addons/OCA/mis-builder"]
+	path = external-addons/OCA/mis-builder
+	url = https://github.com/OCA/mis-builder.git
+	branch = 19.0
+[submodule "external-addons/OCA/reporting-engine"]
+	path = external-addons/OCA/reporting-engine
+	url = https://github.com/OCA/reporting-engine.git
+	branch = 19.0
+[submodule "external-addons/OCA/server-ux"]
+	path = external-addons/OCA/server-ux
+	url = https://github.com/OCA/server-ux.git
+	branch = 19.0
